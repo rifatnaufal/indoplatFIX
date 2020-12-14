@@ -8,8 +8,14 @@ body {
     position: fixed;
 }
 
-.warnainHariIni{
-  background-color:yellow;
+.warnainHariIniGanjil{
+  background-color:#3b609b;
+  color: white;
+}
+
+.warnainHariIniGenap{
+  background-color: #6987cc;;
+  color: white;
 }
 
 

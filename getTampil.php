@@ -1,6 +1,6 @@
 <?php
 
-function fetchKeTabel($mingguIni, $kodeProses, $banyakPesanan, $shift, $k, $hariIni)
+function fetchKeTabel($mingguIni, $kodeProses, $banyakPesanan, $shift, $k, $hariIni,$gangen)
 {
     require("db.php");
     $sql_fill = "SELECT load_proses, kode_mesin from mps where tgl_pengerjaan='$mingguIni' and proses_terlibat='$kodeProses' and kode_pesanan='$banyakPesanan' and
@@ -8,19 +8,25 @@ function fetchKeTabel($mingguIni, $kodeProses, $banyakPesanan, $shift, $k, $hari
             shift='$shift'";
     $result3 = mysqli_query($conn, $sql_fill);
     $row3 = mysqli_fetch_assoc($result3);
+    if ($gangen=="Even") {
+        $tdbukaFunction=$GLOBALS['tdBukaHariInigenap'];
+    } else{
+        $tdbukaFunction=$GLOBALS['tdBukaHariIniganjil'];
+    }
+    
 
     if ($mingguIni==$hariIni) {
         if ($k == 17) {
             if (($row3['load_proses'] == 0)) {
-                echo html_entity_decode($GLOBALS['tdBukaHariIni'] . "-" . $GLOBALS['tdTutup'] . $GLOBALS['trTutup']);
+                echo html_entity_decode($tdbukaFunction. "-" . $GLOBALS['tdTutup'] . $GLOBALS['trTutup']);
             } else {
-                echo html_entity_decode($GLOBALS['tdBukaHariIni'] . $row3['load_proses'] . '<br>' . $row3['kode_mesin'] . $GLOBALS['tdTutup'] . $GLOBALS['trTutup']);
+                echo html_entity_decode($tdbukaFunction. $row3['load_proses'] . '<br>' . $row3['kode_mesin'] . $GLOBALS['tdTutup'] . $GLOBALS['trTutup']);
             }
         } else {
             if (($row3['load_proses'] == 0)) {
-                echo html_entity_decode($GLOBALS['tdBukaHariIni'] . "-" . $GLOBALS['tdTutup']);
+                echo html_entity_decode($tdbukaFunction. "-" . $GLOBALS['tdTutup']);
             } else {
-                echo html_entity_decode($GLOBALS['tdBukaHariIni'] . $row3['load_proses'] . '<br>' . $row3['kode_mesin'] . $GLOBALS['tdTutup']);
+                echo html_entity_decode($tdbukaFunction. $row3['load_proses'] . '<br>' . $row3['kode_mesin'] . $GLOBALS['tdTutup']);
             }
         }
     }else{
@@ -46,6 +52,15 @@ function fetchKeTabel($mingguIni, $kodeProses, $banyakPesanan, $shift, $k, $hari
 }
 
 
+function check($number){ 
+    if($number % 2 == 0){ 
+        $GLOBALS['gangen']= "Even";  
+    } 
+    else{ 
+        $GLOBALS['gangen']="Odd"; 
+    } 
+} 
+
 
 //initializeeverything
 require("db.php");
@@ -59,7 +74,8 @@ $terakhir = $hariTerakhir->format('Y-m-d');
 $trBuka = "&lt;tr&gt;";
 $tdBuka = "&lt;td&gt;";
 $tdTutup = "&lt;/td&gt;";
-$tdBukaHariIni = "&lt;td class='warnainHariIni'&gt;";
+$tdBukaHariIniganjil = "&lt;td class='warnainHariIniGanjil'&gt;";
+$tdBukaHariInigenap = "&lt;td class='warnainHariIniGenap'&gt;";
 $trTutup = "&lt;/tr&gt;";
 $buttonBuka = "&lt;Button ";
 $buttonTutup = "&lt;/Button&gt;";
@@ -78,7 +94,7 @@ $bTutup = "&lt;/b&gt;";
 $inputBuka = "&lt;input ";
 $spanBuka = "&lt;span ";
 $spanTutup = "&lt;/span&gt;";
-
+$gangen="";
 $mingguIni = [];
 
 for ($i = 0; $i < 6; $i++) {
@@ -116,6 +132,12 @@ for ($i = 0; $i < count($banyakPesanan); $i++) {
     }
     var_dump($kodeProses);
     for ($j = 0; $j < count($banyakProses); $j++) {
+        
+        
+
+        check($j);
+        echo $gangen;
+
         if ($j == 0) {
             echo html_entity_decode($trBuka . "&lt;td rowspan=" . count($banyakProses) . "&gt;" . $banyakPesanan[$i] . $tdTutup);
             echo html_entity_decode($tdBuka . $banyakProses[$j] . $tdTutup);
@@ -123,7 +145,7 @@ for ($i = 0; $i < count($banyakPesanan); $i++) {
             $shift = 1;
             $h = 0;
             for ($k = 0; $k < 18; $k++) {
-                fetchKeTabel($mingguIni[$h], $kodeProses[$j], $banyakPesanan[$i], $shift, $k, $hariIni);
+                fetchKeTabel($mingguIni[$h], $kodeProses[$j], $banyakPesanan[$i], $shift, $k, $hariIni,$gangen);
 
                 if ($shift == 3) {
                     $shift = 1;
@@ -137,7 +159,7 @@ for ($i = 0; $i < count($banyakPesanan); $i++) {
             $h = 0;
             echo html_entity_decode($tdBuka . $banyakProses[$j] . $tdTutup);
             for ($k = 0; $k < 18; $k++) {
-                fetchKeTabel($mingguIni[$h], $kodeProses[$j], $banyakPesanan[$i], $shift, $k, $hariIni);
+                fetchKeTabel($mingguIni[$h], $kodeProses[$j], $banyakPesanan[$i], $shift, $k, $hariIni, $gangen);
                 if ($shift == 3) {
                     $shift = 1;
                     $h += 1;

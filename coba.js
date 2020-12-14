@@ -84,7 +84,7 @@ var nambah = parseInt(document.getElementById('number').value);
                     var idHari = document.createAttribute("id"); 
                     var valueHari = document.createAttribute("value");    
                     if (mingguMasuk==(moment().locale("id").format("YYYY-MM-DD"))) {                       
-                        warnaHariIni.value = "color: red;";                                     
+                        warnaHariIni.value = "color: #ffb048;";                                     
                     }else{
                         warnaHariIni.value = "";
                     }

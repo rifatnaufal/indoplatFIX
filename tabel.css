@@ -39,12 +39,12 @@ th {
 }
 
 .warnainTH{
-  background-color: yellow;
+  background-color: #3b609b;
 }
 
 .warnainShift{
-  background-color: yellow;
-  color: black;
+  background-color: #3b609b;
+  color: white;
 }
 
 td{
@@ -73,6 +73,6 @@ td{
   position: static;
   top: 0; /* Don't forget this, required for the stickiness */
   z-index: 100;
-  background-color: yellow;
+  background-color: #3b609b;
 }
 
