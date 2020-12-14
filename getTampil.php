@@ -1,6 +1,6 @@
 <?php
 
-function fetchKeTabel($mingguIni, $kodeProses, $banyakPesanan, $shift, $k)
+function fetchKeTabel($mingguIni, $kodeProses, $banyakPesanan, $shift, $k, $hariIni)
 {
     require("db.php");
     $sql_fill = "SELECT load_proses, kode_mesin from mps where tgl_pengerjaan='$mingguIni' and proses_terlibat='$kodeProses' and kode_pesanan='$banyakPesanan' and
@@ -9,7 +9,23 @@ function fetchKeTabel($mingguIni, $kodeProses, $banyakPesanan, $shift, $k)
     $result3 = mysqli_query($conn, $sql_fill);
     $row3 = mysqli_fetch_assoc($result3);
 
-    if ($k == 17) {
+    if ($mingguIni==$hariIni) {
+        if ($k == 17) {
+            if (($row3['load_proses'] == 0)) {
+                echo html_entity_decode($GLOBALS['tdBukaHariIni'] . "-" . $GLOBALS['tdTutup'] . $GLOBALS['trTutup']);
+            } else {
+                echo html_entity_decode($GLOBALS['tdBukaHariIni'] . $row3['load_proses'] . '<br>' . $row3['kode_mesin'] . $GLOBALS['tdTutup'] . $GLOBALS['trTutup']);
+            }
+        } else {
+            if (($row3['load_proses'] == 0)) {
+                echo html_entity_decode($GLOBALS['tdBukaHariIni'] . "-" . $GLOBALS['tdTutup']);
+            } else {
+                echo html_entity_decode($GLOBALS['tdBukaHariIni'] . $row3['load_proses'] . '<br>' . $row3['kode_mesin'] . $GLOBALS['tdTutup']);
+            }
+        }
+    }else{
+
+        if ($k == 17) {
         if (($row3['load_proses'] == 0)) {
             echo html_entity_decode($GLOBALS['tdBuka'] . "-" . $GLOBALS['tdTutup'] . $GLOBALS['trTutup']);
         } else {
@@ -22,6 +38,11 @@ function fetchKeTabel($mingguIni, $kodeProses, $banyakPesanan, $shift, $k)
             echo html_entity_decode($GLOBALS['tdBuka'] . $row3['load_proses'] . '<br>' . $row3['kode_mesin'] . $GLOBALS['tdTutup']);
         }
     }
+
+    }
+
+
+    
 }
 
 
@@ -31,11 +52,14 @@ require("db.php");
 $getHari = explode("/", $_GET['q']);
 $hariPertama = new DateTime($getHari[0]);
 $hariTerakhir = new DateTime($getHari[1]);
+$hariIniGet= new DateTime();
+$hariIni= $hariIniGet->format('Y-m-d');
 $pertama =  $hariPertama->format('Y-m-d');
 $terakhir = $hariTerakhir->format('Y-m-d');
 $trBuka = "&lt;tr&gt;";
 $tdBuka = "&lt;td&gt;";
 $tdTutup = "&lt;/td&gt;";
+$tdBukaHariIni = "&lt;td class='warnainHariIni'&gt;";
 $trTutup = "&lt;/tr&gt;";
 $buttonBuka = "&lt;Button ";
 $buttonTutup = "&lt;/Button&gt;";
@@ -63,7 +87,9 @@ for ($i = 0; $i < 6; $i++) {
 }
 
 var_dump($mingguIni);
-
+echo '<br>';
+echo $hariIni;
+echo '<br>';
 //fetch banyak pesanan     
 $sql_pesanan = "select kode_pesanan from mps where tgl_pengerjaan between '$pertama' and '$terakhir' group by kode_pesanan asc";
 $result = mysqli_query($conn, $sql_pesanan);
@@ -97,7 +123,7 @@ for ($i = 0; $i < count($banyakPesanan); $i++) {
             $shift = 1;
             $h = 0;
             for ($k = 0; $k < 18; $k++) {
-                fetchKeTabel($mingguIni[$h], $kodeProses[$j], $banyakPesanan[$i], $shift, $k);
+                fetchKeTabel($mingguIni[$h], $kodeProses[$j], $banyakPesanan[$i], $shift, $k, $hariIni);
 
                 if ($shift == 3) {
                     $shift = 1;
@@ -111,7 +137,7 @@ for ($i = 0; $i < count($banyakPesanan); $i++) {
             $h = 0;
             echo html_entity_decode($tdBuka . $banyakProses[$j] . $tdTutup);
             for ($k = 0; $k < 18; $k++) {
-                fetchKeTabel($mingguIni[$h], $kodeProses[$j], $banyakPesanan[$i], $shift, $k);
+                fetchKeTabel($mingguIni[$h], $kodeProses[$j], $banyakPesanan[$i], $shift, $k, $hariIni);
                 if ($shift == 3) {
                     $shift = 1;
                     $h += 1;
@@ -151,7 +177,11 @@ for ($i = 0; $i < count($banyakPesanan); $i++) {
         }
 
         if ($t == 5) {
-            echo html_entity_decode("&lt;td colspan=3 class='submitButton'&gt;" . $buttonBuka . "class='open-submitActual' onclick=" . '"' . "buka('" . $myModal . "')" . '"' . "&gt;Submit actual" . $buttonTutup . " " . $buttonBuka . "class='open-submitActual' onclick=" . '"' . "buka('" . $myMesin . "')" . '"' . "&gt;Submit Mesin" . $buttonTutup);
+            if ($mingguIni[$t]==$hariIni) {
+                echo html_entity_decode("&lt;td colspan=3 class='submitButtonWarnain'&gt;" . $buttonBuka . "class='open-submitActualWarnain' onclick=" . '"' . "buka('" . $myModal . "')" . '"' . "&gt;Submit actual" . $buttonTutup . " " . $buttonBuka . "class='open-submitActualWarnain' onclick=" . '"' . "buka('" . $myMesin . "')" . '"' . "&gt;Submit Mesin" . $buttonTutup);
+            }else{
+                echo html_entity_decode("&lt;td colspan=3 class='submitButton'&gt;" . $buttonBuka . "class='open-submitActual' onclick=" . '"' . "buka('" . $myModal . "')" . '"' . "&gt;Submit actual" . $buttonTutup . " " . $buttonBuka . "class='open-submitActual' onclick=" . '"' . "buka('" . $myMesin . "')" . '"' . "&gt;Submit Mesin" . $buttonTutup);
+            }
             echo html_entity_decode($divBuka . "class='modal' id='" . $myModal . "' &gt;" . $divBuka . "class='modal-content'&gt;");
             echo html_entity_decode($spanBuka . "class='closeModal' onClick=" . '"' . "tutup('" . $myModal . "')" . '"' . "&gt;&times" . $spanTutup);
             echo html_entity_decode($formBuka . " method='post' action='action_page.php' class='form-containerActual'&gt;" . $h1Buka . "Input Actual" . $h1Tutup . $pBuka . "Kode Pesanan : " . $banyakPesanan[$i] . $pTutup . $pBuka . "Tanggal :" . $mingguIni[$t] . $pTutup);
@@ -179,8 +209,11 @@ for ($i = 0; $i < count($banyakPesanan); $i++) {
 
             echo html_entity_decode($tdTutup . $trTutup);
         } else {
-            echo html_entity_decode("&lt;td colspan=3 class='submitButton'&gt;" . $buttonBuka . "class='open-submitActual' onclick=" . '"' . "buka('" . $myModal . "')" . '"' . "&gt;Submit actual" . $buttonTutup . " " . $buttonBuka . "class='open-submitActual' onclick=" . '"' . "buka('" . $myMesin . "')" . '"' . "&gt;Submit Mesin" . $buttonTutup);
-            echo html_entity_decode($divBuka . "class='modal' id='" . $myModal . "' &gt;" . $divBuka . "class='modal-content'&gt;");
+            if ($mingguIni[$t]==$hariIni) {
+                echo html_entity_decode("&lt;td colspan=3 class='submitButtonWarnain'&gt;" . $buttonBuka . "class='open-submitActualWarnain' onclick=" . '"' . "buka('" . $myModal . "')" . '"' . "&gt;Submit actual" . $buttonTutup . " " . $buttonBuka . "class='open-submitActualWarnain' onclick=" . '"' . "buka('" . $myMesin . "')" . '"' . "&gt;Submit Mesin" . $buttonTutup);
+            }else{
+                echo html_entity_decode("&lt;td colspan=3 class='submitButton'&gt;" . $buttonBuka . "class='open-submitActual' onclick=" . '"' . "buka('" . $myModal . "')" . '"' . "&gt;Submit actual" . $buttonTutup . " " . $buttonBuka . "class='open-submitActual' onclick=" . '"' . "buka('" . $myMesin . "')" . '"' . "&gt;Submit Mesin" . $buttonTutup);
+            }echo html_entity_decode($divBuka . "class='modal' id='" . $myModal . "' &gt;" . $divBuka . "class='modal-content'&gt;");
             echo html_entity_decode($spanBuka . "class='closeModal' onClick=" . '"' . "tutup('" . $myModal . "')" . '"' . "&gt;&times" . $spanTutup);
             echo html_entity_decode($formBuka . " method='post' action='action_page.php' class='form-containerActual'&gt;" . $h1Buka . "Input Actual" . $h1Tutup . $pBuka . "Kode Pesanan : " . $banyakPesanan[$i] . $pTutup . $pBuka . "Tanggal :" . $mingguIni[$t] . $pTutup);
 

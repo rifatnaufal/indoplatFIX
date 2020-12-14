@@ -8,6 +8,10 @@ body {
     position: fixed;
 }
 
+.warnainHariIni{
+  background-color:yellow;
+}
+
 
 #tabel1{
   margin-top: 20px;
@@ -278,6 +282,18 @@ body {
 }
 
 .open-submitActual:hover {background-color: #ffb048; color: #b54b0f;}
+
+.open-submitActualWarnain {
+  background-color: #ffb048;
+  color: black;
+  padding: 5px 4px;
+  border: none;
+  margin: auto;
+  cursor: pointer;
+  opacity: 0.8;
+  border-radius:  6px;
+  font-weight: bold;
+}
 
 /* container form */
 .form-containerActual {

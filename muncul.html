@@ -54,24 +54,24 @@
 
                     </tr>
                     <tr>
-                        <th>1</th>
-                        <th>2</th>
-                        <th>3</th>
-                        <th>1</th>
-                        <th>2</th>
-                        <th>3</th>
-                        <th>1</th>
-                        <th>2</th>
-                        <th>3</th>
-                        <th>1</th>
-                        <th>2</th>
-                        <th>3</th>
-                        <th>1</th>
-                        <th>2</th>
-                        <th>3</th>
-                        <th>1</th>
-                        <th>2</th>
-                        <th>3</th>
+                        <th class="kolom1shift">1</th>
+                        <th class="kolom1shift">2</th>
+                        <th class="kolom1shift">3</th>
+                        <th class="kolom2shift">1</th>
+                        <th class="kolom2shift">2</th>
+                        <th class="kolom2shift">3</th>
+                        <th class="kolom3shift">1</th>
+                        <th class="kolom3shift">2</th>
+                        <th class="kolom3shift">3</th>
+                        <th class="kolom4shift">1</th>
+                        <th class="kolom4shift">2</th>
+                        <th class="kolom4shift">3</th>
+                        <th class="kolom5shift">1</th> 
+                        <th class="kolom5shift">2</th>
+                        <th class="kolom5shift">3</th>
+                        <th class="kolom6shift">1</th>
+                        <th class="kolom6shift">2</th>
+                        <th class="kolom6shift">3</th>
                     </tr>
                 </thead>
                 <tbody id="div2">
@@ -116,20 +116,7 @@
 
         </script>
         <script src="coba.js"></script>
-        <script>
-            var table= document.getElementById("fetchTabel");
-            for(var i = 1; i < table.rows[0].cells.length-1; i ++) {    
-                console.log(i)     
-                var day = moment().format("YYYY-MM-DD")
-                var getHariMasingMasing = document.getElementById("getHari"+(i)).getAttribute("value")
-                
-                console.log(getHariMasingMasing)
-                console.log(day)
-                if (getHariMasingMasing==day) {
-                    console.log("hehe")
-                } 
-            }
-        </script>
+        
         <script>
             // button submit actual
             // Get the modal
@@ -161,6 +148,25 @@
 
             // When the user clicks anywhere outside of the modal, close it
 
+        </script>
+        <script>
+            var table= document.getElementById("fetchTabel");
+            for(var i = 1; i < table.rows[0].cells.length-1; i ++) {    
+                console.log(i)     
+                var day = moment().format("YYYY-MM-DD")
+                var getHariMasingMasing = document.getElementById("getHari"+(i)).getAttribute("value")
+                
+                console.log(getHariMasingMasing)
+                console.log(day)
+                if (getHariMasingMasing==day) {
+                    var elem = $('#kolom'+i);
+                    $('.kolom'+i+"shift").removeClass('kolom'+i+'shift').addClass('warnainShift');
+                   
+                    if(!elem.hasClass('warnainTH')){
+                    elem.addClass('warnainTH');
+                    }
+                } 
+            }
         </script>
 
 </body>

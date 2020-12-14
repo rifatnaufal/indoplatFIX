@@ -29,10 +29,22 @@ table, th, td {
 
 
 /* WARNA HARI */
+
+
+
 th {
   
   background-color: #317520;
   color: white;
+}
+
+.warnainTH{
+  background-color: yellow;
+}
+
+.warnainShift{
+  background-color: yellow;
+  color: black;
 }
 
 td{
@@ -55,5 +67,12 @@ td{
   position: static;
   top: 0; /* Don't forget this, required for the stickiness */
   z-index: 100;
+}
+
+.submitButtonWarnain{
+  position: static;
+  top: 0; /* Don't forget this, required for the stickiness */
+  z-index: 100;
+  background-color: yellow;
 }
 
