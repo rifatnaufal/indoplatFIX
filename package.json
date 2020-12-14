@@ -1,0 +1,23 @@
+{
+  "name": "indoplatfix",
+  "version": "1.0.0",
+  "description": "insyaallah sukses",
+  "main": "index.js",
+  "dependencies": {
+    "moment": "^2.29.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rifatnaufal/indoplatFIX.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rifatnaufal/indoplatFIX/issues"
+  },
+  "homepage": "https://github.com/rifatnaufal/indoplatFIX#readme"
+}

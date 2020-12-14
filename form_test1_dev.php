@@ -417,9 +417,9 @@
       }
     }
   }
-  *//* 
-  header("location: form_test.php");
-  exit(); */
+  */
+  header("location: muncul.html");
+  exit(); 
   ?>
   <br>
   <!--   <script>
