@@ -54,24 +54,24 @@
 
                     </tr>
                     <tr>
-                        <th class="kolom1shift">1</th>
-                        <th class="kolom1shift">2</th>
-                        <th class="kolom1shift">3</th>
-                        <th class="kolom2shift">1</th>
-                        <th class="kolom2shift">2</th>
-                        <th class="kolom2shift">3</th>
-                        <th class="kolom3shift">1</th>
-                        <th class="kolom3shift">2</th>
-                        <th class="kolom3shift">3</th>
-                        <th class="kolom4shift">1</th>
-                        <th class="kolom4shift">2</th>
-                        <th class="kolom4shift">3</th>
-                        <th class="kolom5shift">1</th> 
-                        <th class="kolom5shift">2</th>
-                        <th class="kolom5shift">3</th>
-                        <th class="kolom6shift">1</th>
-                        <th class="kolom6shift">2</th>
-                        <th class="kolom6shift">3</th>
+                        <th id="kolom1shift1">1</th>
+                        <th id="kolom1shift2">2</th>
+                        <th id="kolom1shift3">3</th>
+                        <th id="kolom2shift1">1</th>
+                        <th id="kolom2shift2">2</th>
+                        <th id="kolom2shift3">3</th>
+                        <th id="kolom3shift1">1</th>
+                        <th id="kolom3shift2">2</th>
+                        <th id="kolom3shift3">3</th>
+                        <th id="kolom4shift1">1</th>
+                        <th id="kolom4shift2">2</th>
+                        <th id="kolom4shift3">3</th>
+                        <th id="kolom5shift1">1</th> 
+                        <th id="kolom5shift2">2</th>
+                        <th id="kolom5shift3">3</th>
+                        <th id="kolom6shift1">1</th>
+                        <th id="kolom6shift2">2</th>
+                        <th id="kolom6shift3">3</th>
                     </tr>
                 </thead>
                 <tbody id="div2">
@@ -150,23 +150,9 @@
 
         </script>
         <script>
-            var table= document.getElementById("fetchTabel");
-            for(var i = 1; i < table.rows[0].cells.length-1; i ++) {    
-                console.log(i)     
-                var day = moment().format("YYYY-MM-DD")
-                var getHariMasingMasing = document.getElementById("getHari"+(i)).getAttribute("value")
+           
+           
                 
-                console.log(getHariMasingMasing)
-                console.log(day)
-                if (getHariMasingMasing==day) {
-                    var elem = $('#kolom'+i);
-                    $('.kolom'+i+"shift").removeClass('kolom'+i+'shift').addClass('warnainShift');
-                   
-                    if(!elem.hasClass('warnainTH')){
-                    elem.addClass('warnainTH');
-                    }
-                } 
-            }
         </script>
 
 </body>
