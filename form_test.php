@@ -32,8 +32,8 @@ require 'db.php';
         $result = mysqli_query($conn, $sql_proses);
         while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         ?>
-          <label><input type="checkbox" class="checkmark" name='checkboxvar[]' value=<?php echo $row['kode_proses']; ?> />
-            <?php echo $row['nama_proses']; ?></label>
+          <input type="checkbox" class="checkmark" name='checkboxvar[]' value=<?php echo $row['kode_proses']; ?> />
+          <?php echo $row['nama_proses']; ?>
         <?php
         }
         ?>
@@ -71,7 +71,7 @@ require 'db.php';
       <div id="tanggal">
       </div>
       <div>
-        <input type="submit" name="simpan" value="simpan" onclick="popupBox()" />
+        <input id="Simpan" type="submit" name="simpan" value="Simpan" onclick="popupBox()" />
       </div>
     </div>
 

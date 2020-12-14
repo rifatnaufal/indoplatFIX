@@ -10,8 +10,8 @@ input[type=text], select {
   
   input[type=submit] {
     width: 40%;
-    background-color: #63C882;
-    color: white;
+    background-color: #317520;
+    color: #9ecc8d;
     padding: 14px 20px;
     border: none;
     border-radius: 4px;
@@ -19,6 +19,8 @@ input[type=text], select {
     margin:auto;
     margin-left:50%;
     transform: translateX(-50%);
+    font-weight: bold;
+    font-size: 18px;
   }
   
   input[type=submit]:hover {
