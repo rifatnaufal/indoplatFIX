@@ -1,0 +1,118 @@
+<html>
+    <head>
+       <script src="node_modules/moment/moment.js"></script>
+       <script src="node_modules/moment/min/locales.min.js"></script>
+       <script src=build-table.js></script>
+    </head>
+    <body>
+        
+             
+        
+        <!-- <div id="ganti"></div>
+        <button onclick="buatHari(first-=7)">previous</button>
+        <button onclick="buatHari(first+=7)">next</button>
+         
+        <script>
+            
+            var curr = new Date(); // get current date
+            var first = curr.getDate() -  curr.getDay() ; // First day is the day of the month - the day of the week
+        function buatHari(first) {
+           
+            document.getElementById("ganti").innerHTML = "";
+            var firstday = new Date(curr.setDate(first));
+            
+        for (let index = 1; index < 7; index++) {
+            switch (firstday.getDay()) {
+                case 0:
+                    var namahari="Senin";
+                    break;
+                case 1:
+                    var namahari="Selasa";    
+                    break; 
+                case 2:
+                    var namahari="Rabu";
+                    break;
+                case 3:
+                    var namahari="Kamis";    
+                    break;
+                case 4:
+                    var namahari="Jumat";
+                    break;
+                case 5:
+                    var namahari="Sabtu";    
+                    break; 
+                    case 6:
+                    var namahari="Minggu";    
+                    break;
+                default:
+                    break;          
+            }
+            switch (firstday.getMonth()) {
+                case 0:
+                    var namaBulan="Januari";
+                    break;
+                case 1:
+                    var namaBulan="Februari";    
+                    break; 
+                case 2:
+                    var namaBulan="Maret";
+                    break;
+                case 3:
+                    var namaBulan="April";    
+                    break;
+                case 4:
+                    var namaBulan="Mei";
+                    break;
+                case 5:
+                    var namaBulan="Juni";    
+                    break; 
+                case 6:
+                    var namaBulan="Juli";
+                    break;
+                case 7:
+                    var namaBulan="Agustus";    
+                    break; 
+                case 8:
+                    var namaBulan="September";
+                    break;
+                case 9:
+                    var namaBulan="Oktober";    
+                    break;
+                case 10:
+                    var namaBulan="November";
+                    break;
+                case 11:
+                    var namaBulan="Desember";    
+                    break; 
+                default:
+                    break;          
+            }
+            first+=1;
+            var firstday = new Date(curr.setDate(first));
+            console.log(curr);
+            var divHidden = document.createElement("INPUT");
+            var attIdHidden = document.createAttribute("type"); 
+            attIdHidden.value = "hidden";                           
+            divHidden.setAttributeNode(attIdHidden); 
+            divHidden.innerHTML = firstday.getFullYear()+"-"+(firstday.getMonth()+1)+"-"+(("0"+firstday.getDate()).slice(-2));                   
+            document.getElementById("ganti").append(divHidden); 
+            
+            
+            var divTampil = document.createElement("DIV");
+            var attIdTampil = document.createAttribute("id"); 
+            attIdTampil.value = "tgl"+index;                           
+            divTampil.setAttributeNode(attIdTampil); 
+            divTampil.innerHTML = namahari+"<br>"+firstday.getDate()+" "+namaBulan+" "+firstday.getFullYear()+"<br>";                   
+            document.getElementById("ganti").append(divTampil); 
+            
+        }
+        }
+        buatHari(first);
+        
+        
+        
+        
+
+        </script> -->
+    </body>
+</html>

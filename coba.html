@@ -1,0 +1,38 @@
+<html>
+    <head>
+       <script src="node_modules/moment/moment.js"></script>
+       <script src="node_modules/moment/min/locales.min.js"></script>
+       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    </head>
+    <body>
+    
+        
+            
+            <table border=1px id="fetchTabel">
+                <thead>
+                <tr id="barisMinggu">
+                    <th>Kode Pesanan</th>
+                    <th>Proses</th>
+                    <th id="kolom1"></th>
+                    <th id="kolom2"></th>
+                    <th id="kolom3"></th>
+                    <th id="kolom4"></th>
+                    <th id="kolom5"></th>  
+                    <th id="kolom6"> </th>
+                    
+                </tr>
+            </thead>
+            <tbody id="div2">
+
+            </tbody>
+            </table>
+            <div id="ganti"></div>
+            <input type="hidden" id="number"  value="0" />
+            <input type="button" onclick="decreaseValue()" value="Previous" /> 
+            <input type="button" onclick="incrementValue()" value="Next" />                       
+            <input type="button" onclick="hariIni()" value="Today" />
+            
+            <script src="coba.js"></script>
+    </body>
+</html>

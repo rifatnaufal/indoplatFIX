@@ -1,0 +1,187 @@
+<html>
+    <head>
+       <script src="node_modules/moment/moment.js"></script>
+       <script src="node_modules/moment/min/locales.min.js"></script>
+       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    </head>
+    <body>
+    
+        
+            
+            <table border=1px id="fetchTabel">
+                <thead>
+                <tr id="barisMinggu">
+                    <th>Kode Pesanan</th>
+                    <th>Proses</th>
+                    <th id="kolom1"></th>
+                    <th id="kolom2"></th>
+                    <th id="kolom3"></th>
+                    <th id="kolom4"></th>
+                    <th id="kolom5"></th>  
+                    <th id="kolom6"> </th>
+                    
+                </tr>
+            </thead>
+            <tbody id="div2">
+
+            </tbody>
+            </table>
+            <div id="ganti"></div>
+            <input type="hidden" id="number"  value="0" />
+            <input type="button" onclick="decreaseValue()" value="Previous" /> 
+            <input type="button" onclick="incrementValue()" value="Next" />                       
+            <input type="button" onclick="hariIni()" value="Today" />
+            
+         <script>
+
+
+
+
+
+
+
+             
+            
+            var nambah = parseInt(document.getElementById('number').value);
+            
+            function hariIni(){
+                document.getElementById("div2").innerHTML = ""; 
+                nambah = 0;                
+                document.getElementById('number').value = nambah;
+                buatMinggu(nambah);
+                $(document).ready(function(){
+                    
+                    var xhttp;
+                    xhttp = new XMLHttpRequest(); 
+                    xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var parser = new DOMParser();
+                        var doc = parser.parseFromString(this.responseText, "text/html");
+                        var elem = doc.getElementById("div1");
+                    $("#div2").append(elem.innerHTML);
+                    console.log(elem.innerHTML);
+                    }
+                }
+                    xhttp.open("GET", "getTampil.php?q="+$("#getHari1").attr("value") + "/" + $("#getHari6").attr("value"), true);
+                    xhttp.send();
+                });
+            }
+            
+            function buatMinggu(nambah) {
+                //reset div
+                for (let index = 1; index < 7; index++) {
+                    document.getElementById("kolom"+index).innerHTML = ""; 
+                }
+                 
+
+                //initialize hari
+                const hari = moment().locale("id");
+                const coba = hari.add(nambah,'days');  
+                const cobaMinggu =coba.startOf('Week');
+
+                //buat div hari 2-6
+                for (let index = 1; index < 7; index++) {
+                    var divCoba = document.createElement("DIV"); 
+                    
+                    var mingguMasuk=cobaMinggu.add(1,'days').format("YYYY-MM-DD");
+                    var hariMasuk=cobaMinggu.format("dddd");
+                    var warnaHariIni = document.createAttribute("style");
+                    var idHari = document.createAttribute("id"); 
+                    var valueHari = document.createAttribute("value");    
+                    if (mingguMasuk==(moment().locale("id").format("YYYY-MM-DD"))) {                       
+                        warnaHariIni.value = "color: red;";                                     
+                    }else{
+                        warnaHariIni.value = "";
+                    }
+                    valueHari.value=mingguMasuk;  
+                    idHari.value="getHari"+(index);  
+                    divCoba.setAttributeNode(valueHari);
+                    divCoba.setAttributeNode(idHari);
+                    divCoba.setAttributeNode(warnaHariIni);
+                    divCoba.innerHTML = hariMasuk+"<br>"+mingguMasuk;
+                    document.getElementById("kolom"+index).append(divCoba);  
+                    
+                    //console logging value getHari
+                    console.log(document.getElementById("getHari"+index).getAttribute('value'));                                             
+                } 
+
+            }
+            buatMinggu(nambah);
+            
+
+            
+            function incrementValue()
+            {
+                document.getElementById("div2").innerHTML = ""; 
+                var nambah = parseInt(document.getElementById('number').value);
+                nambah = isNaN(nambah) ? 0 : nambah;
+                console.log(nambah);
+                nambah+=7;
+                document.getElementById('number').value = nambah;
+                buatMinggu(nambah);
+                
+                $(document).ready(function(){
+                    var xhttp;
+                    xhttp = new XMLHttpRequest(); 
+                    xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var parser = new DOMParser();
+                        var doc = parser.parseFromString(this.responseText, "text/html");
+                        var elem = doc.getElementById("div1");
+                    $("#div2").append(elem.innerHTML);
+                    console.log(elem.innerHTML);
+                    }
+                }
+                    xhttp.open("GET", "getTampil.php?q="+$("#getHari1").attr("value") + "/" + $("#getHari6").attr("value"), true);
+                    xhttp.send();
+                });
+            }
+
+            function decreaseValue()
+            {
+                document.getElementById("div2").innerHTML = ""; 
+                var nambah = parseInt(document.getElementById('number').value);
+                nambah = isNaN(nambah) ? 0 : nambah;
+                nambah-=7;
+                document.getElementById('number').value = nambah;
+                buatMinggu(nambah);
+                
+                $(document).ready(function(){
+                    var xhttp;
+                    xhttp = new XMLHttpRequest(); 
+                    xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var parser = new DOMParser();
+                        var doc = parser.parseFromString(this.responseText, "text/html");
+                        var elem = doc.getElementById("div1");
+                    $("#div2").append(elem.innerHTML);
+                    console.log(elem.innerHTML);
+                    }
+                }
+                    xhttp.open("GET", "getTampil.php?q="+$("#getHari1").attr("value") + "/" + $("#getHari6").attr("value"), true);
+                    xhttp.send();
+                });
+            }
+            </script>
+            
+            <script>
+                $(document).ready(function(){
+                    
+                    var xhttp;
+                    xhttp = new XMLHttpRequest(); 
+                    xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var parser = new DOMParser();
+                        var doc = parser.parseFromString(this.responseText, "text/html");
+                        var elem = doc.getElementById("div1");
+                    $("#div2").append(elem.innerHTML);
+                    console.log(elem.innerHTML);
+                    }
+                }
+                    xhttp.open("GET", "getTampil.php?q="+$("#getHari1").attr("value") + "/" + $("#getHari6").attr("value"), true);
+                    xhttp.send();
+                });
+                </script>
+    </body>
+</html>

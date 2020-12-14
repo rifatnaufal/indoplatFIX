@@ -1,0 +1,154 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="tabel.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="node_modules/moment/moment.js"></script>
+    <script src="node_modules/moment/min/locales.min.js"></script>
+</head>
+
+<body>
+    <!-- The sidebar -->
+    <div class="sidebar" id="mySidebar">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">X</a>
+        <button class="sidebar-dropbtn">Produksi
+            &nbsp &nbsp <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropbtn-container">
+            <a href="#" style="color: white;">Jadwal Produksi</a>
+            <a href="form_test.php">Input Pesanan</a>
+        </div>
+    </div>
+
+    <div>
+        <div id="main">
+            <div class="topnav">
+                <button class="openbtn" onclick="openNav()"><img src="sidebar.png" style="width: 30px;"></button>
+                PENJADWALAN PRODUKSI
+                <div class="dropdown">
+                    <button class="dropbtn"><img src="profile-icon.png" width="20px" height="15px"> ADMIN</button>
+                    <div class="dropdown-content">
+                        <a href="#">Edit</a>
+                        <a href="#">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style=" display:block; display:flex; justify-content: center;">
+        <div id="tabel1">
+
+            <table id="fetchTabel">
+                <thead>
+                    <tr id="barisMinggu">
+                        <th rowspan="2">Kode Pesanan</th>
+                        <th rowspan="2">Proses</th>
+                        <th id="kolom1" colspan="3"></th>
+                        <th id="kolom2" colspan="3"></th>
+                        <th id="kolom3" colspan="3"></th>
+                        <th id="kolom4" colspan="3"></th>
+                        <th id="kolom5" colspan="3"></th>
+                        <th id="kolom6" colspan="3"> </th>
+
+                    </tr>
+                    <tr>
+                        <th>1</th>
+                        <th>2</th>
+                        <th>3</th>
+                        <th>1</th>
+                        <th>2</th>
+                        <th>3</th>
+                        <th>1</th>
+                        <th>2</th>
+                        <th>3</th>
+                        <th>1</th>
+                        <th>2</th>
+                        <th>3</th>
+                        <th>1</th>
+                        <th>2</th>
+                        <th>3</th>
+                        <th>1</th>
+                        <th>2</th>
+                        <th>3</th>
+                    </tr>
+                </thead>
+                <tbody id="div2">
+                </tbody>
+            </table>
+            <div id="ganti"></div>
+
+        </div>
+    </div>
+    <div class="pagination" style="float:right; margin-right: 5em;">
+        <input type="hidden" id="number" value="0" />
+        <button id="prev" onclick="decreaseValue()" value="Previous">Previous</button>
+        <button id="next" onclick="incrementValue()" value="Next">Next</button>
+        <button id="today" onclick="hariIni()" value="Today">Today</button>
+        <script>
+            function openNav() {
+                document.getElementById("mySidebar").style.width = "250px";
+                document.getElementById("main").style.marginLeft = "0px";
+            }
+
+            function closeNav() {
+                document.getElementById("mySidebar").style.width = "0";
+                document.getElementById("main").style.marginLeft = "0";
+            }
+
+            var dropdown = document.getElementsByClassName("sidebar-dropbtn");
+            var i;
+
+            for (i = 0; i < dropdown.length; i++) {
+                dropdown[i].addEventListener("click", function () {
+                    this.classList.toggle("active");
+                    var dropdownContent = this.nextElementSibling;
+                    if (dropdownContent.style.display === "block") {
+                        dropdownContent.style.display = "none";
+                    } else {
+                        dropdownContent.style.display = "block";
+                    }
+                });
+            }
+
+
+
+        </script>
+        <script src="coba.js"></script>
+        <script>
+            // button submit actual
+            // Get the modal
+            function buka(modal){
+                document.getElementById(modal).style.display="block";
+                window.onclick = function (event) {
+                if (event.target == document.getElementById(modal)) {
+                    document.getElementById(modal).style.display = "none";
+                }
+            }
+            } 
+
+            // Get the button that opens the modal
+           /*  var btn = document.getElementById("myBtn"); */
+
+            // Get the <span> element that closes the modal
+           function tutup(closeModal) {
+                document.getElementById(closeModal).style.display="none";
+           }
+            // When the user clicks the button, open the modal 
+          /*   btn.onclick = function () {
+                modal.style.display = "block";
+            }
+ */
+            // When the user clicks on <span> (x), close the modal
+           /*  span.onclick = function () {
+                modal.style.display = "none";
+            } */
+
+            // When the user clicks anywhere outside of the modal, close it
+            
+        </script>
+
+</body>
+
+</html>

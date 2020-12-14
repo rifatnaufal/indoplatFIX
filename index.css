@@ -1,0 +1,372 @@
+/* The side navigation menu */
+*{margin:0; padding:0;}
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    width: 100%;
+    position: fixed;
+}
+
+
+#tabel1{
+  margin-top: 20px;
+  width:90vw;
+  height: 60vh;
+  display:flex;
+  justify-content:center;
+  overflow-y: scroll;
+}
+
+#tabel1::-webkit-scrollbar {
+ 
+}
+
+
+/* TOMBOL ADMIN */
+.dropbtn {
+  background-color: #505050;
+  color: white;
+  padding: 10px;
+  border-collapse:collapse;
+  font-size: 16px;
+  position:fixed;
+  top: 4;
+  right: 20;
+  border-radius: 6px;
+}
+
+.dropdown {
+  margin-top: 30px;
+  position: absolute;
+  display:relative;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  position:fixed;
+  top: 40;
+  right: 0;
+  z-index: 2;
+  font-size: 15;
+}
+
+.dropdown-content1 {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 200px;
+  overflow: auto;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content1 a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* .dropdown-content a:hover {background-color: orange; color: white;} */
+.dropdown:hover .dropdown-content {display: block;}
+
+/* HOVER ADMIN */
+.dropdown:hover .dropbtn {background-color: orange;}
+
+.dropdown-content1 a:hover {background-color: #555; color: white;}
+.dropdown:hover .dropdown-content1 {display: block;}
+.dropdown:hover .dropbtn1 {background-color: orange;}
+
+.a {
+    float: left;
+    color: #f2f2f2;
+    text-align: right;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 25px;
+}
+
+.sidebar {
+  height: 100%;
+  width: 0px;
+  position: fixed;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  background-color: #333;
+  overflow-x: hidden;
+  transition: 0.5s;
+
+  padding-top: 60px;
+}
+
+.sidebar a, .sidebar-dropbtn {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 20px;
+  color: #818181;
+  display: block;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+}
+
+.dropbtn-container{
+  display: none;
+  background-color: #262626;
+  padding-left: 8px;
+}
+
+.topnav {
+  overflow: active;
+  background-color: #333;
+  width: 2000px;
+  height: 50px;
+  top: -1000px;
+  left: 20px;
+  color: white;
+  font-size: 25;
+}
+.sidebar a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 20px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidebar a:hover {
+  color: #f1f1f1;
+}
+
+.sidebar .closebtn {
+  position: absolute;
+  top: 0;
+  left:165px;
+  font-size: 36px;
+  color:#818181;
+
+}
+
+.pagination button{
+  width: 60px;
+  height: 30px;
+  background-color: #f2f2f2;
+  border-radius: 6px;
+  border-color: black;
+  margin-top: 50px;
+}
+
+
+/* HOVER TOMBOL PREV NEXT */
+#prev:hover {background-color: orange; color: white;}
+#next:hover {background-color: orange; color: white;}
+#today:hover {background-color: orange; color: white;}
+
+.openbtn {
+  font-size: 20px;
+  cursor: pointer;
+  background-color: #111;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+}
+
+.openbtn:hover {
+  background-color: #444;
+}
+
+#main {
+  transition: margin-left .5s;
+  /* padding: 16px; */
+}
+
+  /* Page content. The value of the margin-left property should match the value of the sidebar's width property */
+  .content {   
+    vertical-align: baseline;
+    font-weight: bold;
+    font-size: 29pt;
+    background-color: #4CAF50;
+  }
+
+  .proses{
+    border:solid black;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    width: 54vw;
+    height: 28vh;
+  }
+.proses a{
+  position: relative;
+  background-color: #7cccab;
+  width: 11vw;
+  margin: 10px;
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  color: black;
+  text-decoration: none;
+  letter-spacing: 1.5px;
+  border-radius: 0.5em;
+}
+.btn-proses{
+  position: absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%);
+}
+
+.pagination {
+  display: inline-block;
+}
+
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+
+.pagination a.active {
+  background-color: #4CAF50;
+  color: white;
+}
+
+/* button submit actual */
+/* .open-submitActual {
+  background-color: #555;
+  color: rgb(255, 255, 255);
+  padding: 2px 30px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  bottom: 411px;
+  left: 340px;
+} */
+
+/* container form */
+.form-containerActual {
+  max-width: 300px;
+  padding: 10px;
+  background-color: white;
+  color: black;
+  text-align: left;
+  z-index: 3;
+}
+
+.form-containerActual input[type=text]{
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #f1f1f1;
+}
+
+/* When the inputs get focus, do something */
+.form-containerActual input[type=text]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+/* button submit*/
+.form-containerActual .btnSubmit {
+  background-color: #4CAF50;
+  color: white;
+  padding: 5px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom:10px;
+  opacity: 0.8;
+}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 3 !important; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.7); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  color: black;
+  border: 1px solid #888;
+  width: 20%;
+  justify-content: center;
+}
+
+/* The Close Button */
+.closeModal {
+  color: #000000;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.closeModal:hover,
+.closeModal:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+/* hover button*/
+.form-container .btn:hover, .open-button:hover {
+  opacity: 1;
+}
+.pagination a:hover:not(.active) {background-color: #ddd;}
+
+
+  /* On screens that are less than 700px wide, make the sidebar into a topbar */
+  @media screen and (max-width: 700px) {
+    .sidebar {
+      width: 100%;
+      height: auto;
+      position: relative;
+    }
+    .sidebar a {float: left;}
+  }
+  
+  /* On screens that are less than 400px, display the bar vertically, instead of horizontally */
+  @media screen and (max-width: 700px) {
+    .sidebar a {
+      text-align: center;
+      float: none;
+    }
+  }
+
+  @media screen and (max-height: 450px) {
+    .sidebar {padding-top: 15px;}
+    .sidebar a {font-size: 18px;}
+  }

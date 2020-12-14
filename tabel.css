@@ -1,0 +1,57 @@
+
+.warna-hari{
+    background-color: #3d90ee;
+}
+.warna{
+    background-color: #c0dbfa;
+}
+.warna-1{
+    background-color: #86aad3;
+}
+
+.warna-minggu{
+  background-color: red;
+}
+table, th, td {
+  position: relative;
+    border: 1px black ;
+    
+    /* z-index: -1; */
+  }
+  /* table{
+    border: 3px solid black;
+  } */
+  th, td {
+    width: 1000px;
+    padding: 5px;
+    text-align: center;    
+  }
+/* TOLONG ATUR WARNA BUAT ISI TABEL */
+  tr:nth-child(odd){background-color: #dddddd}
+  tr:nth-child(even){background-color: #fd9e9e}
+
+
+/* WARNA HARI */
+th {
+  
+  background-color: #6a7eda;
+  color: white;
+}
+  table.tampil {
+    empty-cells: show;
+  }
+
+  .inlineTable {
+    display: inline-block;
+}
+
+.floatTable{
+  float: left;;
+}
+/* position dari sticky jadi static, kalo ga dirubah nanti baris actual bakal di atas form input actual */
+.submitButton{
+  position: static;
+  top: 0; /* Don't forget this, required for the stickiness */
+  z-index: 100;
+}
+
