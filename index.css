@@ -3,7 +3,7 @@
 body {
     margin: 0;
     padding: 0;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     width: 100%;
     position: fixed;
 }
@@ -11,25 +11,32 @@ body {
 
 #tabel1{
   margin-top: 20px;
-  width:90vw;
-  height: 60vh;
+  width: 97vw;
+  height: 75vh;
   display:flex;
   justify-content:center;
   overflow-y: scroll;
 }
 
-#tabel1::-webkit-scrollbar {
- 
+#tabel1::-webkit-scrollbar{
+  width: 10px;
+}
+#tabel1::-webkit-scrollbar-thumb {
+ background-color: #628e50;
 }
 
+#tabel1::-webkit-scrollbar-track {
+  background-color: #9ecc8d;
+}
 
 /* TOMBOL ADMIN */
 .dropbtn {
-  background-color: #505050;
-  color: white;
+  background-color: #9ecc8d;
+  color: #628e50;
   padding: 10px;
   border-collapse:collapse;
   font-size: 16px;
+  font-weight: bold;
   position:fixed;
   top: 4;
   right: 20;
@@ -83,9 +90,8 @@ body {
 .dropdown:hover .dropdown-content {display: block;}
 
 /* HOVER ADMIN */
-.dropdown:hover .dropbtn {background-color: orange;}
-
-.dropdown-content1 a:hover {background-color: #555; color: white;}
+.dropdown:hover .dropbtn {background-color: #628e50; color: #9ecc8d;}
+.dropdown-content a:hover {background-color: #9ecc8d; color: white;}
 .dropdown:hover .dropdown-content1 {display: block;}
 .dropdown:hover .dropbtn1 {background-color: orange;}
 
@@ -139,7 +145,7 @@ body {
   height: 50px;
   top: -1000px;
   left: 20px;
-  color: white;
+  color: #9ecc8d;
   font-size: 25;
 }
 .sidebar a {
@@ -167,22 +173,24 @@ body {
 .pagination button{
   width: 60px;
   height: 30px;
-  background-color: #f2f2f2;
+  background-color: #173a0d;
+  color: #9ecc8d;
   border-radius: 6px;
   border-color: black;
   margin-top: 50px;
+  font-weight: bold;
 }
 
 
 /* HOVER TOMBOL PREV NEXT */
-#prev:hover {background-color: orange; color: white;}
-#next:hover {background-color: orange; color: white;}
-#today:hover {background-color: orange; color: white;}
+#prev:hover {background-color: #ffb048; color: #b54b0f;}
+#next:hover {background-color: #ffb048; color: #b54b0f;}
+#today:hover {background-color: #ffb048; color: #b54b0f;}
 
 .openbtn {
   font-size: 20px;
   cursor: pointer;
-  background-color: #111;
+  background-color: #333;
   color: white;
   padding: 10px 15px;
   border: none;
@@ -250,18 +258,26 @@ body {
   color: white;
 }
 
+/* hover button*/
+.form-container .btn:hover, .open-button:hover {
+  opacity: 1;
+}
+.pagination a:hover:not(.active) {background-color: #ddd;}
+
 /* button submit actual */
-/* .open-submitActual {
-  background-color: #555;
-  color: rgb(255, 255, 255);
-  padding: 2px 30px;
+.open-submitActual {
+  background-color: #317520;
+  color: #9ecc8d;
+  padding: 5px 4px;
   border: none;
+  margin: auto;
   cursor: pointer;
   opacity: 0.8;
-  position: fixed;
-  bottom: 411px;
-  left: 340px;
-} */
+  border-radius:  6px;
+  font-weight: bold;
+}
+
+.open-submitActual:hover {background-color: #ffb048; color: #b54b0f;}
 
 /* container form */
 .form-containerActual {
@@ -339,14 +355,6 @@ body {
   text-decoration: none;
   cursor: pointer;
 }
-
-
-/* hover button*/
-.form-container .btn:hover, .open-button:hover {
-  opacity: 1;
-}
-.pagination a:hover:not(.active) {background-color: #ddd;}
-
 
   /* On screens that are less than 700px wide, make the sidebar into a topbar */
   @media screen and (max-width: 700px) {

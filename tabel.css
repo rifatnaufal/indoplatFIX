@@ -1,6 +1,6 @@
 
 .warna-hari{
-    background-color: #3d90ee;
+    background-color: #317520;
 }
 .warna{
     background-color: #c0dbfa;
@@ -15,27 +15,29 @@
 table, th, td {
   position: relative;
     border: 1px black ;
-    
     /* z-index: -1; */
   }
-  /* table{
-    border: 3px solid black;
-  } */
+
   th, td {
     width: 1000px;
     padding: 5px;
     text-align: center;    
   }
 /* TOLONG ATUR WARNA BUAT ISI TABEL */
-  tr:nth-child(odd){background-color: #dddddd}
-  tr:nth-child(even){background-color: #fd9e9e}
+  tr:nth-child(odd){background-color: #dbdbdb}
+  tr:nth-child(even){background-color: #9ecc8d}
 
 
 /* WARNA HARI */
 th {
   
-  background-color: #6a7eda;
+  background-color: #317520;
   color: white;
+}
+
+td{
+  height: 70px;
+  font-size: 18px;
 }
   table.tampil {
     empty-cells: show;
