@@ -18,11 +18,16 @@ table, th, td {
     /* z-index: -1; */
   }
 
+
+
+
   th, td {
     width: 1000px;
     padding: 5px;
     text-align: center;    
   }
+
+  
 /* TOLONG ATUR WARNA BUAT ISI TABEL */
   tr:nth-child(odd){background-color: #dbdbdb}
   tr:nth-child(even){background-color: #9ecc8d}
@@ -36,7 +41,13 @@ th {
   
   background-color: #317520;
   color: white;
+
+  width: 75px;
 }
+
+thead tr:nth-child(1) th { position: sticky; top: 0; z-index:1000;}
+thead tr:nth-child(2) th { position: sticky; top: 50px; z-index:1000;} 
+
 
 .warnainTH{
   background-color: #3b609b;
@@ -48,7 +59,8 @@ th {
 }
 
 td{
-  height: 70px;
+  height: 88.5px;
+  width: 75px;
   font-size: 18px;
 }
   table.tampil {
