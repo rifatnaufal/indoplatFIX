@@ -35,13 +35,13 @@ function masukinSHift($masukHariHitung,$a,$i,$ui){
               array_push($GLOBALS['mesin_masuk'],$mesin_masuk_mps[0]);
               array_push($GLOBALS['shift_ke'],$shift);
               if ($ui==0) {
-                array_push($GLOBALS['isi'],$GLOBALS['array_awal_produksi'][$i]);
-                $GLOBALS['array_awal_produksi'][$i]=0;
+                array_push($GLOBALS['isi'],$GLOBALS['array_aktual'][$i]);
+                $GLOBALS['array_aktual'][$i]=0;
               }else{
                 if ($i==0) {
-                  $GLOBALS['isi'][$i]=$GLOBALS['array_awal_produksi'][$i];
+                  $GLOBALS['isi'][$i]=$GLOBALS['array_aktual'][$i];
                 }else{
-                  $GLOBALS['isi'][$i]=($GLOBALS['array_awal_produksi'][$i])+($GLOBALS['isi_fix'][($ui-1)][($i-1)]);
+                  $GLOBALS['isi'][$i]=($GLOBALS['array_aktual'][$i])+($GLOBALS['isi_fix'][($ui-1)][($i-1)]);
                 }
               }
               
@@ -123,6 +123,7 @@ function masukinSHift($masukHariHitung,$a,$i,$ui){
  $mesin_masuk_fix=[];
 $array_awal_produksi=$_POST['email'];
 $array_aslinya=[];
+$array_aktual=[];
 $kode_pesanan=$_POST['pesanan'];
 
 $masuk_hari_ke_sekian1=$_POST['hari_bersangkutan'];
@@ -170,19 +171,29 @@ $date_maju_pengiriman = date_create($masuk_hari_ke_sekian1);
     for ($i=0; $i<count($array_aslinya);$i++){
         $temp=$array_aslinya[$i]-$array_awal_produksi[$i];
         if ($temp!=0) {
-            $counter_selisih+=1;
+          $counter_selisih+=1;
         }
-        $array_awal_produksi[$i]=$temp;
+        if ($i==0) {
+          $array_aktual[$i]=$temp;
+          
+        }else{
+          $array_aktual[$i]=$array_awal_produksi[$i-1]+$temp;
+        }
     }
-    if ($counter_selisih==0) {
-        header("Location: muncul.html");
-        exit();
-    } else{
+
+      if ($counter_selisih!=0) {
         mysqli_query($conn,"DELETE from `mps` where kode_pesanan='$kode_pesanan'");
         echo 'data dihapus';
-    }
-    print_r($array_awal_produksi);
+      } else{
+        header("location: muncul.html");
+        exit();
+      }
 
+        
+    
+    print_r($array_awal_produksi);
+    echo '<br>';
+    print_r($array_aktual);
   
 
 
