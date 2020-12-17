@@ -45,8 +45,8 @@ th {
   width: 75px;
 }
 
-thead tr:nth-child(1) th { position: sticky; top: 0; z-index:1000;}
-thead tr:nth-child(2) th { position: sticky; top: 50px; z-index:1000;} 
+thead tr:nth-child(1) th { position: sticky; top: 0; z-index:50;}
+thead tr:nth-child(2) th { position: sticky; top: 54.49px; z-index:50;} 
 
 
 .warnainTH{

@@ -1,6 +1,3 @@
-<html>
-
-<body>
   <?php
   $servername = "localhost";
   $dbh_username = "root";
@@ -14,7 +11,3 @@
   }
 
   ?>
-
-</body>
-
-</html>
