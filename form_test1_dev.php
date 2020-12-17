@@ -300,9 +300,9 @@
 
   if (!$row) {
     //"kosong gan"
-    $kodepesanan = 'pes-1';
+    $kodepesanan = 'pes-0001';
   } else {
-    $kodepesanan = 'pes-' . (intval($rowcount) + 1);
+    $kodepesanan = 'pes-'.sprintf('%04s', (intval($rowcount) + 1));
 
     // echo '<br>';
   }

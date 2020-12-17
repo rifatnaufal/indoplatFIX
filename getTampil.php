@@ -187,7 +187,7 @@ for ($i = 0; $i < count($banyakPesanan); $i++) {
         while ($row6 = mysqli_fetch_assoc($result6)) {
             array_push($cek_pengiriman, $row6['tgl_kirim']);
         }
-        print_r($cek_pengiriman);
+        // print_r($cek_pengiriman);
 
         $hari_minimal = new DateTime($result5[0]);
 

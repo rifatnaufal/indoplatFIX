@@ -27,16 +27,17 @@ require 'db.php';
       </p>
       <p>
         <label>Proses:</label>
-        <div style="padding: 0; margin-top: -20px;margin-bottom:50px;display: flex; justify-content: space-around; "> 
+        
+        <div style="padding: 0; margin-top: -5px;margin-bottom:20px;display: flex; flex-wrap: wrap;align-content:center;justify-content: space-around; "> 
         <?php
         $sql_proses = "SELECT * from proses";
         $result = mysqli_query($conn, $sql_proses);
         while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
         ?>
         
-        <div style="margin:0;width:10px; height: 10px; align: center;">
+        <div style="display: inline-block;padding:0;margin:0;width:90px; height: 60px; align: center;">
           <input type="checkbox" class="checkmark" name='checkboxvar[]' value=<?php echo $row['kode_proses']; ?> />
-          <?php echo $row['nama_proses']; ?>
+        <span ><?php echo '<br>';echo $row['nama_proses']; ?></span>
         </div>
         
         <?php
