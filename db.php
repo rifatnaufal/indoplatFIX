@@ -1,13 +1,15 @@
   <?php
-  $servername = "localhost";
-  $dbh_username = "root";
-  $dbh_password = "";
-  $db_name = "indoplat";
+$server="127.0.0.1";
+$username="root";
+$password="3005";
+$database = "indoplat";
 
-  $conn = mysqli_connect($servername, $dbh_username, $dbh_password, $db_name);
+/* Create database  connection with correct username and password*/
 
-  if (!$conn) {
-    die("connection failed" . mysqli_connect_error());
-  }
+$conn=new mysqli($server,$username,$password,$database);
+
+/* Check the connection is created properly or not */
+if($conn->connect_error)
+    echo "Connection error:" .$connect->connect_error;
 
   ?>

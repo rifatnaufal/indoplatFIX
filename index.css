@@ -192,6 +192,25 @@ body {
 }
 
 
+
+/* PRELOADER */
+#preloader{
+  position: fixed;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%);
+  z-index:3000;
+}
+
+#preloader img{
+  position: absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%);
+}
+
+
+
 /* HOVER TOMBOL PREV NEXT */
 #prev:hover {background-color: #ffb048; color: #b54b0f;}
 #next:hover {background-color: #ffb048; color: #b54b0f;}

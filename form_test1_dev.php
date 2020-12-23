@@ -149,9 +149,9 @@
 
 
   //fetch kode proses dan stok  
-  if (!empty($_POST['checkboxvar'])) {
-    for ($i = 0; $i < count($_POST['checkboxvar']); $i++) {
-      $t = $_POST['checkboxvar'][$i];
+  if (!empty($a)) {
+    for ($i = 0; $i < count($a); $i++) {
+      $t = $a[$i];
       $sql_cabang = "SELECT * from proses where kode_proses='$t'";
       $result = mysqli_query($conn, $sql_cabang);
       while ($r = mysqli_fetch_array($result)) {
@@ -165,7 +165,7 @@
 
 
   //persiapan array load produksi
-  $produksi_segar = ($_POST['JumlahPart'] - array_sum($stok_wip)) + (($_POST['JumlahPart'] - array_sum($stok_wip)) * 20 / 100);
+  $produksi_segar = ($jumlahpart - array_sum($stok_wip)) + (($jumlahpart - array_sum($stok_wip)) * 20 / 100);
   // echo 'produksi awal: ';
   // echo $produksi_segar;
   $banyak_produksi = count($a);
@@ -183,7 +183,7 @@
 
   //validate the date before everything
 
-  for ($i = 0; $i < $_POST['banyakTanggal']; $i++) {
+  for ($i = 0; $i < $banyakpengiriman; $i++) {
     $hehe = 'tanggalkirim' . $i;
     // echo ($_POST[$hehe]);
     // echo '<br>';
