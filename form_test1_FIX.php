@@ -1,4 +1,25 @@
 <html><?php require 'db.php';
+ //inisialisasi semuanya (kecuali yang dalam perulangan karena biasanya digunakan untuk me-reset)
+ $namapemesan = $_POST["nama"];
+ $namapart = $_POST["namapart"];
+ $jumlahpart = $_POST["JumlahPart"];
+ $banyakpengiriman = $_POST["banyakTanggal"];
+ $tanggal_pengiriman = [];
+ $isi = [];
+ $mesin_masuk = [];
+ $shift_ke = [];
+ $shift_ke_fix = [];
+ $hari_masuk = [];
+ $hari_masuk_fix = [];
+ $status_tanggal_maju = "";
+ $counter_pending = 0;
+ $kodepesanan="";
+ $isi_fix = [];
+ $mesin_masuk_fix = [];
+ //isinya stok wip
+ $stok_wip = [];
+ // $a isinya proses yang terlibat
+ $a = $_POST['checkboxvar'];
 
 
 
@@ -29,6 +50,7 @@
             // echo 'di hari: ' . $cekhari;
             // echo '<br>';
             if ($banyak_mesin_di_proses < $banyak_mesin_untuk_proses) {
+              
               $yow = mysqli_query($conn, "SELECT kode_mesin FROM `mps` where proses_terlibat='$a[$i]' and tgl_pengerjaan='$cekhari' and status_pengerjaan='on process' and shift=$shift  and not(kode_mesin)='-' GROUP BY kode_mesin");
               $mesin_di_jadwal=[];
               
@@ -52,6 +74,8 @@
               }else{
                 $mesin_masuk_mps = mysqli_fetch_array(mysqli_query($conn, "SELECT kode_mesin FROM `mesin` where proses_mesin = '$a[$i]' and not(kode_mesin) in"." (".$not_mesin.")"));
               }
+              // print_r($mesin_di_jadwal);
+              
               // echo $mesin_masuk_mps[0];
               array_push($GLOBALS['mesin_masuk'], $mesin_masuk_mps[0]);
               array_push($GLOBALS['shift_ke'], $shift);
@@ -119,7 +143,6 @@
         } else {
           $GLOBALS['tanggal_pengiriman'][$l] = date_format($date_maju_pengiriman, "Y-m-d");
         }
-        
       }
 
       //fetch kode proses dan stok 
@@ -142,7 +165,7 @@
   //persiapan array load produksi
   function persiapan_array_load_produksi($jumlahpart,$stok_wip,$banyak_produksi){
     
-    $produksi_segar = (intval($jumlahpart) - array_sum($stok_wip)) + ((intval($jumlahpart) - array_sum($stok_wip)) * 20 / 100);
+    $produksi_segar = ($jumlahpart - array_sum($stok_wip)) + (($jumlahpart - array_sum($stok_wip)) * 20 / 100);
     // echo 'produksi awal: ';
     // echo $produksi_segar;  
     array_push($GLOBALS['load_proses'], $produksi_segar);
@@ -153,7 +176,16 @@
     }
   }
 
-
+   //validate the date before everything
+   function validate_the_date_before_everything($banyakpengiriman){
+  
+    for ($i = 0; $i < $banyakpengiriman; $i++) {
+      $hehe = 'tanggalkirim' . $i;
+      // echo ($_POST[$hehe]);
+      // echo '<br>';
+      array_push($GLOBALS['tanggal_pengiriman'], $_POST[$hehe]);
+    }
+  }
 
 //proses semuanya
   function process_semuanya($tanggal_pengiriman,$a,$status_tanggal_maju){
@@ -175,6 +207,30 @@
             tambah_hari_pending($l, $counter_pending);
           }
         }
+        echo '<br>';
+      echo "<br>";
+
+      echo 'counter pending: ' . $counter_pending;
+      echo "<br>";
+
+      echo 'mesin yang masuk: ' . $mesin_masuk[$i];
+      echo '<br>';
+      echo 'masuk di shift: ';
+      print_r($GLOBALS['shift_ke']);
+      echo '<br>';
+      echo $GLOBALS['shift_ke'][0];
+      echo "<br>";
+      echo 'masuk di hari: ';
+      echo '<br>';
+      print_r($GLOBALS['hari_masuk']);
+      echo '<br>';
+      print_r($GLOBALS['hari_masuk_fix']);
+      echo "<br>";
+      echo 'apakah keisi? ' . $GLOBALS['hasil_isi'];
+      echo "<br>";
+      echo 'dikirim tanggal: ';
+      print_r($GLOBALS['tanggal_pengiriman']);
+      echo '<br>';
       }
   
       $tambah_hari = date_create($masuk_hari_ke_sekian);
@@ -264,142 +320,34 @@
 <body>
 
   <?php 
+        //fetch kode proses dan stok 
+        fetch_kode_proses_dan_stok($a);
+        $banyak_produksi = count($a);
+        $load_proses = [];
+        $array_awal_produksi = [];
 
+        //persiapan array load produksi
+        persiapan_array_load_produksi($jumlahpart,$stok_wip,$banyak_produksi);
 
+        //validate the date before everything
+        validate_the_date_before_everything($banyakpengiriman);
 
-      if (isset($_POST['upload'])) {
-        require('PHPtoExcel/spreadsheet-reader-master/php-excel-reader/excel_reader2.php');
-        require('PHPtoExcel/spreadsheet-reader-master/SpreadsheetReader.php');
-        //upload data excel kedalam folder uploads
-        $target_dir = "PHPtoExcel/uploads/" . basename($_FILES['filemhsw']['name']);
-        move_uploaded_file($_FILES['filemhsw']['tmp_name'], $target_dir);
-        $Reader = new SpreadsheetReader($target_dir);
+        //ngurangin 7 hari untuk injeksi dan buat memperkirakan hari
+        process_semuanya($tanggal_pengiriman,$a,$status_tanggal_maju);
 
-        $tgl_kirim_besar=[];
-        $tgl_kirim_kecil=[];
-        $nama_pemesan_besar=[];
-        $nama_pemesan_kecil=[];
-        $part_besar=[];
-        $part_kecil=[];
-        $qty_besar=[];
-        $qty_kecil=[];
-        $i=0;
-        $banyakKey=0;
-        foreach ($Reader as $Key => $Row) {$banyakKey+=1;}
-        foreach ($Reader as $Key => $Row) {         
-          if ($Row[0]!='no') {
-            if ($Row[0]=='tgl kirim') {
-              if ($i!=0) {
-                $nama_pemesan_besar[$i-1]=$nama_pemesan_kecil;
-                $part_besar[$i-1]=$part_kecil;
-                $qty_besar[$i-1]=$qty_kecil;
-                $nama_pemesan_kecil=[];
-                $part_kecil=[];
-                $qty_kecil=[];
-                $tgl_kirim_kecil=[];
-              }
-              array_push($tgl_kirim_kecil,$Row[1]);
-              $tgl_kirim_besar[$i]=$tgl_kirim_kecil;
-              $i+=1;				
-            }else{
-              array_push($nama_pemesan_kecil,$Row[1]);
-              array_push($part_kecil,$Row[2]);
-              array_push($qty_kecil,$Row[3]);
-              if ($Key==$banyakKey-1) {
-                $nama_pemesan_besar[$i-1]=$nama_pemesan_kecil;
-                $part_besar[$i-1]=$part_kecil;
-                $qty_besar[$i-1]=$qty_kecil;
-                $nama_pemesan_kecil=[];
-                $part_kecil=[];
-                $qty_kecil=[];						
-                $tgl_kirim_kecil=[];
-              }
-            }
-          }
-        }
-      
-        echo '<pre>';
-            print_r($tgl_kirim_besar);			 
-        echo '</pre>';
-        echo '<pre>';
-            print_r($nama_pemesan_besar);			 
-        echo '</pre>';
-        echo '<pre>';
-            print_r($part_besar);			 
-        echo '</pre>';
-        echo '<pre>';
-            print_r($qty_besar);			 
-        echo '</pre>'; 
-        echo '<pre>';
-        echo ($qty_besar[0][0]);
-        echo '</pre>';
-      }
-      
-
-
+        //input data ke tabel pesanan
+        input_data_ke_tabel_pesanan($namapemesan,$namapart,$jumlahpart,$banyakpengiriman);
         
-        for ($banyakExcel=0; $banyakExcel < count($tgl_kirim_besar); $banyakExcel++) { 
+        //input data ke tabel proses_pesanan
+        input_data_ke_tabel_proses_pesanan ($kodepesanan,$a);
 
-          $tanggal_pengiriman = $tgl_kirim_besar[$banyakExcel];
-          for ($banyakRow=0; $banyakRow < count($nama_pemesan_besar[$banyakExcel]); $banyakRow++) { 
-            $namapemesan = $nama_pemesan_besar[$banyakExcel][$banyakRow];
-            $namapart = $part_besar[$banyakExcel][$banyakRow];
-            $jumlahpart = $qty_besar[$banyakExcel][$banyakRow];
-            $banyakpengiriman = count($tgl_kirim_besar[$banyakExcel]);             
-            $isi = [];
-            $mesin_masuk = [];
-            $shift_ke = [];
-            $shift_ke_fix = [];
-            $hari_masuk = [];
-            $hari_masuk_fix = [];
-            $status_tanggal_maju = "";
-            $counter_pending = 0;
-            $kodepesanan="";
-            $isi_fix = [];
-            $mesin_masuk_fix = [];
-            //isinya stok wip
-            $stok_wip = [];
-            $a = [];
-            // $a isinya proses yang terlibat
-            $sql_cabang = "SELECT kode_proses from paket_proses where nama_paket='$namapart'";
-            $result = mysqli_query($conn, $sql_cabang);
-            while ($huhu = mysqli_fetch_array($result)) {
-              array_push($a, $huhu['kode_proses']);
-            }
-
-            //fetch kode proses dan stok 
-            fetch_kode_proses_dan_stok($a);
-            $banyak_produksi = count($a);
-            $load_proses = [];
-            $array_awal_produksi = [];
-            
-            //persiapan array load produksi
-            persiapan_array_load_produksi($jumlahpart,$stok_wip,$banyak_produksi);
-
-            print_r($stok_wip);
-            //ngurangin 7 hari untuk injeksi dan buat memperkirakan hari
-            process_semuanya($tanggal_pengiriman,$a,$status_tanggal_maju);
-
-            //input data ke tabel pesanan
-            input_data_ke_tabel_pesanan($namapemesan,$namapart,$jumlahpart,$banyakpengiriman);
-            
-            //input data ke tabel proses_pesanan
-            input_data_ke_tabel_proses_pesanan ($kodepesanan,$a);
-
-            //input data ke table tgl_kirim_pesanan
-            input_data_ke_tabel_tgl_kirim_pesanan($kodepesanan,$tanggal_pengiriman);
-            //input ke table MPS baru
-            input_ke_table_MPS_baru($banyak_produksi,$hari_masuk_fix,$isi_fix,$mesin_masuk_fix,$a,$shift_ke_fix,$kodepesanan);
-
-          }
-
-        }
-
-         //inisialisasi semuanya (kecuali yang dalam perulangan karena biasanya digunakan untuk me-reset)
-     
-       
-   header("location: muncul.html");
-  die();  
+        //input data ke table tgl_kirim_pesanan
+        input_data_ke_tabel_tgl_kirim_pesanan($kodepesanan,$tanggal_pengiriman);
+        //input ke table MPS baru
+        print_r($hari_masuk_fix);
+        input_ke_table_MPS_baru($banyak_produksi,$hari_masuk_fix,$isi_fix,$mesin_masuk_fix,$a,$shift_ke_fix,$kodepesanan);
+  /* header("location: muncul.html");
+  die();   */
   ?>
   <br>
   </script>
