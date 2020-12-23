@@ -1,6 +1,8 @@
+
 <html>
 
 <head>
+    <title>Sample Indoplat</title>
     <link rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="tabel.css">
@@ -8,8 +10,13 @@
     <script src="node_modules/moment/moment.js"></script>
     <script src="node_modules/moment/min/locales.min.js"></script>
 </head>
+<script type="text/javascript">
+           function loading() {
+               document.getElementById("preloader").style.display="none";
+           }
+</script>
 
-<body>
+<body onload="loading()">
     <!-- The sidebar -->
     <div class="sidebar" id="mySidebar">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">X</a>
@@ -25,10 +32,10 @@
     <div>
         <div id="main">
             <div class="topnav">
-                <button class="openbtn" onclick="openNav()"><img src="sidebar.png" style="width: 30px;"></button>
+                <span><img  class="openbtn" src="sidebar.png" onclick="openNav()" style="width: 30px;" alt=""></span>
                 PENJADWALAN PRODUKSI
                 <div class="dropdown">
-                    <button class="dropbtn"><img src="profile-icon.png" width="20px" height="15px"> ADMIN</button>
+                    <button class="dropbtn"><img src="profile-icon.png" width="18.5px" height="18.5px" alt=""> ADMIN</button>
                     <div class="dropdown-content">
                         <a href="#">Edit</a>
                         <a href="#">Logout</a>
@@ -74,10 +81,14 @@
                         <th id="kolom6shift3">3</th>
                     </tr>
                 </thead>
+                <div id="preloader">
+                    <img src="img/loading2.gif" width="100px;">
+                </div>
+                
                 <tbody id="div2">
                 </tbody>
+                
             </table>
-            <div id="ganti"></div>
 
         </div>
     </div>
@@ -86,6 +97,7 @@
         <button id="prev" onclick="decreaseValue()" value="Previous">Previous</button>
         <button id="next" onclick="incrementValue()" value="Next">Next</button>
         <button id="today" onclick="hariIni()" value="Today">Today</button>
+       
         <script>
             function openNav() {
                 document.getElementById("mySidebar").style.width = "250px";
@@ -115,9 +127,15 @@
 
 
         </script>
-        <script src="coba.js"></script>
+        
+        <script src="coba.js">
+
+            
+        </script>
+        
         
         <script>
+            
             // button submit actual
             // Get the modal
             function buka(modal) {
@@ -149,11 +167,7 @@
             // When the user clicks anywhere outside of the modal, close it
 
         </script>
-        <script>
-           
-           
-                
-        </script>
+        
 
 </body>
 
