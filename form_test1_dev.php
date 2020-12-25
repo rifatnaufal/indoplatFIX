@@ -185,6 +185,25 @@
 
 
 
+  //input data ke tabel pesanan   
+  $sql_pesanan = "SELECT * FROM pesanan";
+  $result = mysqli_query($conn, $sql_pesanan);
+  $rowcount = mysqli_num_rows($result);
+  $row = mysqli_fetch_assoc($result);
+
+  if (!$row) {
+    //"kosong gan"
+    $kodepesanan = 'pes-0001';
+  } else {
+    $kodepesanan = 'pes-'.sprintf('%04s', (intval($rowcount) + 1));
+
+    echo '<br>';
+  }
+  echo $kodepesanan;
+  $sql_inputPesanan = "INSERT INTO pesanan (kode_pesanan, nama_pemesan, nama_pesanan, jumlah_pesanan, banyak_pengiriman, status) VALUES ('$kodepesanan','$namapemesan','$namapart','$jumlahpart','$banyakpengiriman','on process')";
+  $result = mysqli_query($conn, $sql_inputPesanan);
+
+
   //persiapan array load produksi
   $produksi_segar = ($jumlahpart - array_sum($stok_wip)) + (($jumlahpart - array_sum($stok_wip)) * 20 / 100);
   echo 'produksi awal: ';
@@ -198,6 +217,17 @@
     array_push($load_proses, $stok_wip[$i]);
     array_push($array_awal_produksi, $stok_wip[$i]);
   }
+
+  //input data ke tabel proses_pesanan
+
+  for ($i = 0; $i < count($a); $i++) {
+    $kodeproses = $a[$i];
+    $sql_inputprosesPesanan = "INSERT INTO proses_pesanan (kode_pesanan, kode_proses, load_aslinya) VALUES ('$kodepesanan','$kodeproses','$array_awal_produksi[$i]')";
+    $result = mysqli_query($conn, $sql_inputprosesPesanan);
+  }
+  '<br>';
+
+
   echo '<br>';
   print_r($array_awal_produksi);
   echo '<br>';
@@ -316,33 +346,8 @@
 
 
 
-  //input data ke tabel pesanan   
-  $sql_pesanan = "SELECT * FROM pesanan";
-  $result = mysqli_query($conn, $sql_pesanan);
-  $rowcount = mysqli_num_rows($result);
-  $row = mysqli_fetch_assoc($result);
-
-  if (!$row) {
-    //"kosong gan"
-    $kodepesanan = 'pes-0001';
-  } else {
-    $kodepesanan = 'pes-'.sprintf('%04s', (intval($rowcount) + 1));
-
-    echo '<br>';
-  }
-  echo $kodepesanan;
-  $sql_inputPesanan = "INSERT INTO pesanan (kode_pesanan, nama_pemesan, nama_pesanan, jumlah_pesanan, banyak_pengiriman, status) VALUES ('$kodepesanan','$namapemesan','$namapart','$jumlahpart','$banyakpengiriman','on process')";
-  $result = mysqli_query($conn, $sql_inputPesanan);
 
 
-  //input data ke tabel proses_pesanan
-
-  for ($i = 0; $i < count($a); $i++) {
-    $kodeproses = $a[$i];
-    $sql_inputprosesPesanan = "INSERT INTO proses_pesanan (kode_pesanan, kode_proses) VALUES ('$kodepesanan','$kodeproses')";
-    $result = mysqli_query($conn, $sql_inputprosesPesanan);
-  }
-  '<br>';
 
   //input data ke table tgl_kirim_pesanan
   for ($i = 0; $i < count($tanggal_pengiriman); $i++) {

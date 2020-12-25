@@ -54,6 +54,12 @@
               }
               // echo $mesin_masuk_mps[0];
               array_push($GLOBALS['mesin_masuk'], $mesin_masuk_mps[0]);
+               print_r($mesin_di_jadwal);
+               echo '<br>';
+               print_r($GLOBALS['array_awal_produksi']);
+               echo '<br>';
+              echo $mesin_masuk_mps[0];
+              
               array_push($GLOBALS['shift_ke'], $shift);
               if ($ui == 0) {
                 array_push($GLOBALS['isi'], $GLOBALS['array_awal_produksi'][$i]);
@@ -63,21 +69,21 @@
                   $GLOBALS['isi'][$i] = $GLOBALS['array_awal_produksi'][$i];
                 } else {
                   $GLOBALS['isi'][$i] = ($GLOBALS['array_awal_produksi'][$i]) + ($GLOBALS['isi_fix'][($ui - 1)][($i - 1)]);
+                  $GLOBALS['array_awal_produksi'][$i]=$GLOBALS['array_awal_produksi'][$i-1];
                 }
+                
               }
-
+              echo '<br>';
+              print_r($GLOBALS['isi_fix'][$i]);
+              echo '<br>';
 
               $shift_selesai += 1;
               $shift_keisi += 1;
             } else if (($j == 2) and ($shift_keisi == 0)) {
-              if ($ui != 0) {
-                $GLOBALS['isi'][$i] = 0;
-              }
+              
               $shift_selesai += 1;
             } else {
-              if ($ui != 0) {
-                $GLOBALS['isi'][$i] = 0;
-              }
+              
               $j += 1;
             }
           }
@@ -100,9 +106,10 @@
           } else {
             $GLOBALS['hasil_isi'] = 'keisi';
             $GLOBALS['hari_masuk'][0] = $cekhari;
-            $selesai += 1;
+            
             $shift_keisi -= 1;
           }
+          $selesai += 1;
         }
       }
 
@@ -221,8 +228,9 @@
       require 'db.php';
       for ($i = 0; $i < count($a); $i++) {
         $kodeproses = $a[$i];
-        $sql_inputprosesPesanan = "INSERT INTO proses_pesanan (kode_pesanan, kode_proses) VALUES ('$kodepesanan','$kodeproses')";
-        $result = mysqli_query($conn, $sql_inputprosesPesanan);
+        $array_awal_produksi=$GLOBALS['array_awal_produksi'][$i];
+    $sql_inputprosesPesanan = "INSERT INTO proses_pesanan (kode_pesanan, kode_proses, load_aslinya) VALUES ('$kodepesanan','$kodeproses','$array_awal_produksi')";
+    $result = mysqli_query($conn, $sql_inputprosesPesanan);
       }
       '<br>';
     }
@@ -376,16 +384,18 @@
             //persiapan array load produksi
             persiapan_array_load_produksi($jumlahpart,$stok_wip,$banyak_produksi);
 
+
+            //input data ke tabel pesanan
+            input_data_ke_tabel_pesanan($namapemesan,$namapart,$jumlahpart,$banyakpengiriman);
+                        
+            //input data ke tabel proses_pesanan
+            input_data_ke_tabel_proses_pesanan ($kodepesanan,$a);
+
             print_r($stok_wip);
             //ngurangin 7 hari untuk injeksi dan buat memperkirakan hari
             process_semuanya($tanggal_pengiriman,$a,$status_tanggal_maju);
 
-            //input data ke tabel pesanan
-            input_data_ke_tabel_pesanan($namapemesan,$namapart,$jumlahpart,$banyakpengiriman);
             
-            //input data ke tabel proses_pesanan
-            input_data_ke_tabel_proses_pesanan ($kodepesanan,$a);
-
             //input data ke table tgl_kirim_pesanan
             input_data_ke_tabel_tgl_kirim_pesanan($kodepesanan,$tanggal_pengiriman);
             //input ke table MPS baru
