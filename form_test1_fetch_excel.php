@@ -130,32 +130,30 @@
       }
 
       //fetch kode proses dan stok 
-   function fetch_kode_proses_dan_stok($a){
-    require 'db.php';
-    if (!empty($a)) {
-      for ($i = 0; $i < count($a); $i++) {
-        $t = $a[$i];
-        $sql_cabang = "SELECT * from proses where kode_proses='$t'";
-        $result = mysqli_query($conn, $sql_cabang);
-        while ($r = mysqli_fetch_array($result)) {
-           echo $r['nama_proses'];
-           echo '<br>';
-          array_push($GLOBALS['stok_wip'], $r['stok_wip']);
+      function fetch_kode_proses_dan_stok($a){
+        require ("db.php");
+        if (!empty($a)) {
+          for ($i = 0; $i < count($a); $i++) {
+            $t = $a[$i];
+            $sql_cabang = "SELECT * from proses where kode_proses='$t'";
+            $result = mysqli_query($conn, $sql_cabang);
+            while ($r = mysqli_fetch_array($result)) {
+              echo $r['nama_proses'];
+              echo '<br>';
+              array_push($GLOBALS['stok_wip'], $r['stok_wip']);
+            }
+          }
         }
+      
       }
-    }
-  }
 
   //persiapan array load produksi
-  function persiapan_array_load_produksi($jumlahpart,$stok_wip,$banyak_produksi){
-    
-    $produksi_segar = (intval($jumlahpart) - array_sum($stok_wip)) + ((intval($jumlahpart) - array_sum($stok_wip)) * 20 / 100);
-    // echo 'produksi awal: ';
-    // echo $produksi_segar;  
-    array_push($GLOBALS['load_proses'], $produksi_segar);
+  function persiapan_array_load_produksi($a,$jumlahpart,$stok_wip,$banyak_produksi){
+    $produksi_segar = ($jumlahpart - array_sum($stok_wip)) + (($jumlahpart - array_sum($stok_wip)) * 20 / 100);
+    echo 'produksi awal: ';
+    echo $produksi_segar;    
     array_push($GLOBALS['array_awal_produksi'], $produksi_segar);
     for ($i = 0; $i < $banyak_produksi - 1; $i++) {
-      array_push($GLOBALS['load_proses'], $stok_wip[$i]);
       array_push($GLOBALS['array_awal_produksi'], $stok_wip[$i]);
     }
   }
@@ -378,11 +376,11 @@
             //fetch kode proses dan stok 
             fetch_kode_proses_dan_stok($a);
             $banyak_produksi = count($a);
-            $load_proses = [];
+
             $array_awal_produksi = [];
             
             //persiapan array load produksi
-            persiapan_array_load_produksi($jumlahpart,$stok_wip,$banyak_produksi);
+            persiapan_array_load_produksi($a,$jumlahpart,$stok_wip,$banyak_produksi);
 
 
             //input data ke tabel pesanan

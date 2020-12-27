@@ -1,120 +1,142 @@
 <?php
 require 'db.php'; 
-function masukinSHift($masukHariHitung,$a,$i,$ui){
-    require 'db.php'; 
-        $counter=0;
-        $cekhari=$masukHariHitung;
-        $selesai=0;
-        $tambah=0; 
-        $shift_selesai=0;  
-        $shift_keisi=0;
-        while ($selesai==0) {
-          $j=0;       
-          while ($shift_selesai == 0) {
-            $shift=$j+1;
-            $banyak_mesin_di_proses=mysqli_num_rows(mysqli_query($conn, "SELECT kode_mesin FROM `mps` where proses_terlibat='$a[$i]' and tgl_pengerjaan='$cekhari' and status_pengerjaan='on process' and shift=$shift  and not(kode_mesin)='-' group by kode_mesin"));        
-            $banyak_mesin_untuk_proses=mysqli_num_rows(mysqli_query($conn, "SELECT kode_mesin FROM `mesin` where proses_mesin= '$a[$i]'"));
-            // echo '<br>';
-            // echo ("SELECT kode_mesin FROM `mps` where proses_terlibat='$a[$i]' and tgl_pengerjaan='$cekhari' and status_pengerjaan='on process' and shift=$shift  and not(kode_mesin)='-' group by kode_mesin");
-            // echo '<br>';
-            // echo 'banyak mesin di proses: '.$banyak_mesin_di_proses;
-            // echo '<br>';
-            // echo 'shift ke: '.($j+1);
-            // echo "<br>"; 
-            // echo 'proses ke: '.$a[$i];
-            // echo "<br>"; 
-            // echo 'di hari: '.$cekhari;
-            // echo '<br>';  
-            if ($banyak_mesin_di_proses<$banyak_mesin_untuk_proses) {
-              $yow = mysqli_query($conn, "SELECT kode_mesin FROM `mps` where proses_terlibat='$a[$i]' and tgl_pengerjaan='$cekhari' and status_pengerjaan='on process' and shift=$shift  and not(kode_mesin)='-' GROUP BY kode_mesin");
-              $mesin_di_jadwal=[];
-              
-              while($result=mysqli_fetch_assoc($yow)){
-                array_push($mesin_di_jadwal,$result['kode_mesin']);
-              }             
 
-              
-              $not_mesin="";
-              $hehe=count($mesin_di_jadwal);
-              for ($we=0; $we < count($mesin_di_jadwal); $we++) { 
-                  if ($we!=$hehe-1) {
-                      $not_mesin=$not_mesin."'".$mesin_di_jadwal[$we]."',";
-                  }else{
-                      $not_mesin=$not_mesin."'".$mesin_di_jadwal[$we]."'";
-                  }
-              }
-
-              if($mesin_di_jadwal==null){
-                $mesin_masuk_mps = mysqli_fetch_array(mysqli_query($conn, "SELECT kode_mesin FROM `mesin` where proses_mesin = '$a[$i]'"));
-              }else{
-                $mesin_masuk_mps = mysqli_fetch_array(mysqli_query($conn, "SELECT kode_mesin FROM `mesin` where proses_mesin = '$a[$i]' and not(kode_mesin) in"." (".$not_mesin.")"));
-                
-              }
-              // echo $mesin_masuk_mps[0];
-              array_push($GLOBALS['mesin_masuk'],$mesin_masuk_mps[0]);
-              array_push($GLOBALS['shift_ke'],$shift);
-              if ($ui==0) {
-                array_push($GLOBALS['isi'],$GLOBALS['array_aktual'][$i]);
-                $GLOBALS['array_aktual'][$i]=0;
-              }else{
-                if ($i==0) {
-                  $GLOBALS['isi'][$i]=$GLOBALS['array_aktual'][$i];
-                }else{
-                  if (!isset($GLOBALS['isi_fix'][($ui-1)][($i-1)])) {
-                    $GLOBALS['isi'][$i]=($GLOBALS['array_aktual'][$i]);
-                  }else{
-                    $GLOBALS['isi'][$i]=($GLOBALS['array_aktual'][$i])+($GLOBALS['isi_fix'][($ui-1)][($i-1)]);
-                  }
-                  
-                  $GLOBALS['array_aktual'][$i]=$GLOBALS['array_aktual'][$i-1];
-                }
-              }
-              
-              
-              $shift_selesai+=1;
-              $shift_keisi+=1; 
-              
-              
-            } else if (($j==2) and ($shift_keisi==0)) {   
-               if ($ui!=0) {
-                $GLOBALS['isi'][$i]=0;
-              } 
-              $shift_selesai+=1;
-            }else{
-               if ($ui!=0) {
-                $GLOBALS['isi'][$i]=0;
-              } 
-              $j+=1;
-            } 
-          }    
-          if ($shift_keisi==0) {  
-            $tambah_hari=date_create($cekhari);
-            date_add($tambah_hari,date_interval_create_from_date_string("1 days"));
-            
-            if ((date_format($tambah_hari, "l") == "Sunday")) {
-              date_sub($tambah_hari, date_interval_create_from_date_string("-1 days"));
-              $cekhari = date_format($tambah_hari, "Y-m-d");
-              $counter+=1;
-            } else {
-              $cekhari = date_format($tambah_hari, "Y-m-d");
-            }
-            $GLOBALS['masuk_hari_ke_sekian']=$cekhari;
-            $GLOBALS['status_tanggal_maju']="maju";
-            $counter+=1;
-            $GLOBALS['counter_pending']=$counter;
-            $shift_selesai-=1;           
-          } else{
-            $GLOBALS['hasil_isi']= 'keisi';
-            $GLOBALS['hari_masuk'][0]=$cekhari;
-            
-            $shift_keisi-=1;
+function masukinSHift($masukHariHitung, $a, $i, $ui)
+{
+  require 'db.php';
+  $counter = 0;
+  $cekhari = $masukHariHitung;
+  $selesai = 0;
+  $tambah = 0;
+  $shift_selesai = 0;
+  $shift_keisi = 0;
+  $maju=$GLOBALS['maju'];
+  while ($selesai == 0) {
+    $j = 0;
+    while ($shift_selesai == 0) {
+      $shift = $j + 1;
+      $banyak_mesin_di_proses = mysqli_num_rows(mysqli_query($conn, "SELECT kode_mesin FROM `mps` where proses_terlibat='$a[$i]' and tgl_pengerjaan='$cekhari' and status_pengerjaan='on process' and shift=$shift  and not(kode_mesin)='-' group by kode_mesin"));
+      $banyak_mesin_untuk_proses = mysqli_num_rows(mysqli_query($conn, "SELECT kode_mesin FROM `mesin` where proses_mesin= '$a[$i]'"));
+      echo '<br>';
+      echo ("SELECT kode_mesin FROM `mps` where proses_terlibat='$a[$i]' and tgl_pengerjaan='$cekhari' and status_pengerjaan='on process' and shift=$shift  and not(kode_mesin)='-' group by kode_mesin");
+      echo '<br>';
+      echo 'banyak mesin di proses: ' . $banyak_mesin_di_proses;
+      echo '<br>';
+      echo 'shift ke: ' . ($j + 1);
+      echo "<br>";
+      echo 'proses ke: ' . $a[$i];
+      echo "<br>";
+      echo 'di hari: ' . $cekhari;
+      echo '<br>';
+      if ($banyak_mesin_di_proses < $banyak_mesin_untuk_proses) {
+        if ($GLOBALS['status_tanggal_maju']=="maju") {          
+          $maju="hehe";
+          $tambah_hari = date_create($cekhari);
+          date_add($tambah_hari, date_interval_create_from_date_string("-1 days"));
+    
+          if ((date_format($tambah_hari, "l") == "Sunday")) {
+            date_sub($tambah_hari, date_interval_create_from_date_string("1 days"));
+            $cekhari = date_format($tambah_hari, "Y-m-d");
+            $counter -= 1;
+          } else {
+            $cekhari = date_format($tambah_hari, "Y-m-d");
           }
-          
-          $selesai+=1;
+          $GLOBALS['masuk_hari_ke_sekian'] = $cekhari;
+
+
+
+          break;
         }
+        $yow = mysqli_query($conn, "SELECT kode_mesin FROM `mps` where proses_terlibat='$a[$i]' and tgl_pengerjaan='$cekhari' and status_pengerjaan='on process' and shift=$shift  and not(kode_mesin)='-' GROUP BY kode_mesin");
+        $mesin_di_jadwal=[];
         
+        while($result=mysqli_fetch_assoc($yow)){
+          array_push($mesin_di_jadwal,$result['kode_mesin']);
+        }             
+
+        
+        $not_mesin="";
+        $hehe=count($mesin_di_jadwal);
+        for ($we=0; $we < count($mesin_di_jadwal); $we++) { 
+            if ($we!=$hehe-1) {
+                $not_mesin=$not_mesin."'".$mesin_di_jadwal[$we]."',";
+            }else{
+                $not_mesin=$not_mesin."'".$mesin_di_jadwal[$we]."'";
+            }
+        }
+
+        if($mesin_di_jadwal==null){
+          $mesin_masuk_mps = mysqli_fetch_array(mysqli_query($conn, "SELECT kode_mesin FROM `mesin` where proses_mesin = '$a[$i]'"));
+        }else{
+          $mesin_masuk_mps = mysqli_fetch_array(mysqli_query($conn, "SELECT kode_mesin FROM `mesin` where proses_mesin = '$a[$i]' and not(kode_mesin) in"." (".$not_mesin.")"));
+          
+        }
+        array_push($GLOBALS['mesin_masuk'], $mesin_masuk_mps[0]);
+         print_r($mesin_di_jadwal);
+         echo '<br>';
+         print_r($GLOBALS['array_awal_produksi']);
+         echo '<br>';
+        echo $mesin_masuk_mps[0];
+        
+        array_push($GLOBALS['shift_ke'], $shift);
+        if (($ui == 0) && ($i==0)) {
+          array_push($GLOBALS['isi'], $GLOBALS['array_aktual'][$i]);
+          $GLOBALS['array_aktual'][$i] = 0;
+        } else {
+            if ($i == 0) {
+              $GLOBALS['isi'][$i] = $GLOBALS['array_aktual'][$i];
+            } else {
+              $huhue=($GLOBALS['array_aktual'][$i]) + ($GLOBALS['isi_fix'][($ui - 1)][($i - 1)]);
+              
+              array_push($GLOBALS['isi'],$huhue);
+              $GLOBALS['array_aktual'][$i]=$GLOBALS['array_aktual'][$i-1];
+            }
+          
+        }
+        echo '<br>';
+        print_r($GLOBALS['isi'][$i]);
+        echo '<br>';
+        $shift_selesai += 1;
+        $shift_keisi += 1;
+      } else if (($j == 2) and ($shift_keisi == 0)) {
+        
+        $shift_selesai += 1;
+      } else {
+        
+        $j += 1;
+      } 
+    }
+    if ($shift_keisi == 0) {
+      if ($maju=="hehe") {
+        $GLOBALS['maju']="hehe";
+        $selesai+=1;
+      }else{
+      $tambah_hari = date_create($cekhari);
+      date_add($tambah_hari, date_interval_create_from_date_string("1 days"));
+
+      if ((date_format($tambah_hari, "l") == "Sunday")) {
+        date_sub($tambah_hari, date_interval_create_from_date_string("-1 days"));
+        $cekhari = date_format($tambah_hari, "Y-m-d");
+        $counter += 1;
+      } else {
+        $cekhari = date_format($tambah_hari, "Y-m-d");
       }
-  
+      $GLOBALS['masuk_hari_ke_sekian'] = $cekhari;
+      $GLOBALS['status_tanggal_maju'] = "maju";
+      
+      $counter += 1;
+      $GLOBALS['counter_pending'] = $counter;
+      $shift_selesai -= 1;
+    }
+    } else {
+      $GLOBALS['hasil_isi'] = 'keisi';
+      array_push($GLOBALS['hari_masuk'],$cekhari);      
+      $shift_keisi -= 1;
+      $selesai += 1;
+    }
+    
+  }
+}
   
   function tambah_hari_pending($l,$banyak_nambah){
     
@@ -146,7 +168,7 @@ function masukinSHift($masukHariHitung,$a,$i,$ui){
  $isi_fix=[];
  $pengiriman_ada=$_POST['pengiriman'];
  $mesin_masuk_fix=[];
-
+ $maju="";
 $array_aslinya=[];
 $array_aktual=[];
 $kode_pesanan=$_POST['pesanan'];
@@ -318,14 +340,17 @@ $date_maju_pengiriman = date_create($masuk_hari_ke_sekian1);
             } */
             
             masukinSHift($masuk_hari_ke_sekian,$a,$i,$ui);
-            // echo "<br>";
-            if ($status_tanggal_maju=="maju") {
-              // echo "majuin tanggal pengiriman";
-              for ($l=$ui; $l < count($tanggal_pengiriman); $l++) { 
-                tambah_hari_pending($l,$counter_pending);
-              }
-              
-            }
+            echo "<br>";
+      if ($status_tanggal_maju == "maju") {
+        echo "majuin tanggal pengiriman";
+        for ($l = $ui; $l < count($tanggal_pengiriman); $l++) {
+          tambah_hari_pending($l, $counter_pending);
+        }
+        $status_tanggal_maju="";
+      }
+      if ($maju=="maju") {
+        break;
+      }
             // echo '<br>';
             // echo "<br>";
       
@@ -349,6 +374,14 @@ $date_maju_pengiriman = date_create($masuk_hari_ke_sekian1);
             // echo '<br>';
           
         }
+        array_push($shift_ke_fix,$shift_ke);
+        array_push($hari_masuk_fix,$hari_masuk);
+  array_push($isi_fix,$isi);
+  array_push($mesin_masuk_fix,$mesin_masuk);
+  $isi=[];
+        $mesin_masuk=[];
+        $shift_ke=[];
+        $hari_masuk=[];
         $tambah_hari=date_create($masuk_hari_ke_sekian);
             date_add($tambah_hari,date_interval_create_from_date_string("1 days"));
             
@@ -358,14 +391,7 @@ $date_maju_pengiriman = date_create($masuk_hari_ke_sekian1);
             } else {
               $masuk_hari_ke_sekian = date_format($tambah_hari, "Y-m-d");
             } 
-            array_push($shift_ke_fix,$shift_ke);
-            array_push($hari_masuk_fix,$hari_masuk[0]);
-      array_push($isi_fix,$isi);
-      array_push($mesin_masuk_fix,$mesin_masuk);
-      $isi=[];
-            $mesin_masuk=[];
-            $shift_ke=[];
-            $hari_masuk=[];
+           
       
       }
         // print_r( $tanggal_pengiriman);
@@ -399,10 +425,27 @@ $date_maju_pengiriman = date_create($masuk_hari_ke_sekian1);
     $sql_inputtglkirim = "UPDATE tgl_kirim_pesanan set kode_pesanan='$kode_pesanan', tgl_kirim='$tgl_kirim') where kode_pesanan='$kode_pesanan' and tgl_kirim='$pengiriman_ada[$i]'";
     $result = mysqli_query($conn, $sql_inputtglkirim);
   }
+
+  echo 'kode proses: ';
+  print_r($a);
+  echo '<br>';
+  echo 'stok wip:';
+  print_r($stok_wip);
+  echo '<br>';
+  echo 'mesin terlibat:';
+  print_r($mesin_masuk_fix);
+  echo '<br>';
+  echo 'array awal persiapan produksi: ';
+  print_r($array_aktual);
+  echo '<br>';
+  echo 'isi: ';
+  print_r($isi_fix);
+  echo '<br>';
+  echo '<br>';
          //input ke table MPS baru
   for ($i = 0; $i < count($a); $i++) {
-    $input_tgl_mps = $hari_masuk_fix[$i];
     for ($j=0; $j<count($a); $j++){
+      $input_tgl_mps = $hari_masuk_fix[$i][$j];
       $input_load_mps = $isi_fix[$i][$j];  
       if ($input_load_mps==0) {
         $input_mesin="-";
