@@ -11,7 +11,7 @@ require 'db.php';
 
 <body>
   <h2 class="judul">Form Input Pesanan</h2>
-  <form action="dev_fetch_excel.php" method="POST" id="formTanggal" onkeydown="return event.key != 'Enter';">
+  <form action="form_test1_FIX.php" method="POST" id="formTanggal" onkeydown="return event.key != 'Enter';">
     <div class="cardInput">
       <p>
         <label>Nama Pemesan:</label>
